@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.python-version
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Local data and generated artefacts
+data/*.csv
+data/*.xlsx
+outputs/
+!data/forecast_2026.csv
+*.log
+.discovery-bin/
+
+# Local settings and OS / editor
+.env
+.env.*
+.DS_Store
+.vscode/
+.idea/
