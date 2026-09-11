@@ -37,3 +37,8 @@ secondaryBackgroundColor = "#1E293B"
 textColor = "#F1F5F9"
 borderColor = "#334155"
 primaryColor = "#60A5FA"
+
+[client]
+# Оставляет пользователям только элементы, заданные приложением,
+# без технических пунктов меню Streamlit.
+toolbarMode = "minimal"
