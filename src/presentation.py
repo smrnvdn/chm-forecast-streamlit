@@ -1,16 +1,30 @@
-"""Presentation helpers for the CatBoost-79 forecast matrix."""
+"""Presentation helpers for the shared regional forecast matrix."""
 
 from __future__ import annotations
 
 import pandas as pd
 
 
-def forecast_matrix(hourly: pd.DataFrame) -> pd.DataFrame:
+def forecast_matrix(hourly: pd.DataFrame, score_kind: str) -> pd.DataFrame:
     """Build a date × market-hour matrix and retain cell status for styling."""
     display = hourly.copy()
-    display["cell"] = display.apply(lambda row: f"✓ {row.probability:.0%}" if row.is_predicted and row.is_actual else f"{row.probability:.0%}", axis=1)
+    if score_kind == "probability":
+        display["cell"] = display.probability.map(lambda value: f"{value:.0%}")
+    elif score_kind == "load_shape_score":
+        # The Volgograd model predicts a relative hourly load shape, not an
+        # event probability. Keep its signed percentage-point scale visible.
+        display["cell"] = display.score.map(lambda value: f"{value:+.1f}%")
+    else:
+        raise ValueError(f"Unknown score kind: {score_kind}")
+    display.loc[display.is_predicted & display.is_actual, "cell"] = (
+        "✓ " + display.loc[display.is_predicted & display.is_actual, "cell"]
+    )
     matrix = display.pivot(index="date", columns="market_hour", values="cell")
-    matrix = matrix.reindex(columns=range(8, 22), fill_value="—").fillna("—")
+    # Preserve the original 08:00–21:00 display while allowing future
+    # regions whose approved candidate hours extend beyond that range.
+    first_hour = min(8, int(display.market_hour.min()))
+    last_hour = max(21, int(display.market_hour.max()))
+    matrix = matrix.reindex(columns=range(first_hour, last_hour + 1), fill_value="—").fillna("—")
     matrix.columns = [f"{hour:02d}:00" for hour in matrix.columns]
     weekdays = ("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
     labels = {

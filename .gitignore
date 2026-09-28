@@ -12,6 +12,7 @@ data/*.csv
 data/*.xlsx
 outputs/
 !data/forecast_2026.csv
+!data/forecast_volgograd_2026.csv
 *.log
 .discovery-bin/
 

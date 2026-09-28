@@ -1,0 +1,38 @@
+{
+  "region": "Волгоградская область",
+  "model": "m0399",
+  "snapshot_type": "retrospective proxy backtest",
+  "months": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+  ],
+  "target_day_count": 161,
+  "hourly_rows": 1968,
+  "hit_at_2": 82,
+  "two_plus_two_all_days": 94,
+  "score_meaning": "CatBoost predicted hourly load deviation from daily mean, percentage points",
+  "probability_meaning": "Daily softmax of scores with temperature fitted on labels through 2024-11; probabilities sum to one over eligible hours",
+  "calibration_manifest_sha256": "76b3793929f16be4f6007523812e9322b65636d0655079eee618672a67de42a0",
+  "calibrated_probabilities_sha256": "0f7f243e4f166390fa82daaca1a110b1c83411dc31820f108693baebb139d53c",
+  "market_hour_mapping": "source zero-based hour + 1; market hour 1 is Moscow 00:00-01:00",
+  "training_fact_lag": "For forecast month M, regional consumption labels known only through M-2",
+  "forecast_proxy": "Target-month actual weather and RSV substituted for available weather forecast and RSV plan",
+  "source_sha256": {
+    "2026-01.csv": "758cf516bfc58efd4e639b47366b67c8d53e90299152ed3a7cfcc44b30d39840",
+    "2026-02.csv": "eca1083ccbfbc8540efb645e03637f28c53ae671e17e74b1905c790ef6068635",
+    "2026-03.csv": "370dbfea767e1d9e34b27b0f4349bd732a9c972ad69e2cfabf34ccc2e9889109",
+    "2026-04.csv": "5dfacc56b4edf02592b0e749ed7ac4cecdabf46ddf7c6fe699be55c7ab56357b",
+    "2026-05.csv": "c1f0faa6bb93a7dd37bb8b11302c57ea822441269d6d4dd38f2db33a70775ec4",
+    "2026-06.csv": "eed88174d243486bf2ae22b21e794efef3e3c171fa4c5fe536d521350c503620",
+    "2026-07.csv": "bf9ec5ce13d004de2d4811456bdc50c1eaa1099b92c4517b8b0f3a105ba20de1",
+    "2026-08.csv": "235117b43799b257ff5c1883f0a54852909bafe201909d77b31b21eadff11b66"
+  },
+  "saved_daily_sha256": "efc173779840612d3b1f8c342561b9a1c152d89ac80e3f0c54fc85c6aa47151f",
+  "snapshot_sha256": "9a5827e944f71e5503fd15f68328fb7c6748667a6afeda4aaa3a25af6d340b86"
+}
