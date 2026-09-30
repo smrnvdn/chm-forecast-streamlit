@@ -26,12 +26,35 @@ def load_forecast_snapshot(region_code: str, file_mtime_ns: int) -> pd.DataFrame
     return hourly
 
 
+# Native bind="query-params" serializes format_func's Russian display labels
+# and removes the default value. Explicit sync keeps stable ASCII region URLs
+# for every selection, including the first region, without changing labels.
+url_region = st.query_params.get("region")
+if url_region not in REGIONS:
+    url_region = next(iter(REGIONS))
+    st.query_params["region"] = url_region
+if st.session_state.get("_region_url") != url_region:
+    st.session_state["forecast_region"] = url_region
+    st.session_state["_region_url"] = url_region
+
+
+def sync_region_url() -> None:
+    selected = st.session_state["forecast_region"]
+    if selected in REGIONS:
+        st.query_params["region"] = selected
+        st.session_state["_region_url"] = selected
+
+
 region_code = st.selectbox(
     "Регион",
     options=tuple(REGIONS),
     format_func=lambda code: REGIONS[code].name,
     key="forecast_region",
+    on_change=sync_region_url,
 )
+if region_code not in REGIONS:
+    st.error("Неизвестный регион")
+    st.stop()
 region = REGIONS[region_code]
 st.title(f"Прогноз часа максимума для {region.genitive}")
 st.caption(f"Модель: {region.model_label}")
