@@ -66,6 +66,8 @@ except (FileNotFoundError, ValueError) as exc:
     st.error(f"Не удалось загрузить проверенный прогноз региона: {exc}")
     st.stop()
 months = available_months(hourly_all)
+unverified_months = sorted(hourly_all.loc[~hourly_all.fact_available, "month_start"].unique())
+default_months = [pd.Timestamp(unverified_months[-1])] if unverified_months else months
 
 with st.expander("О модели и данных", expanded=False, icon=":material/info:"):
     st.markdown(region.about_markdown)
@@ -74,7 +76,7 @@ with st.container(border=True):
     selected_months = st.multiselect(
         "Месяцы прогноза",
         options=months,
-        default=months,
+        default=default_months,
         format_func=month_label,
         select_all=True,
         placeholder="Выберите один или несколько месяцев",
@@ -103,10 +105,12 @@ with st.container(horizontal=True):
     st.metric("2+2 на всех днях", rate_text(verified["hit_segment_2plus2"]), border=True)
     st.metric("2+2 при двух участках", rate_text(two_segments["hit_segment_2plus2"]), border=True)
 
-if len(verified) != len(daily):
+if verified.empty:
+    st.info("Прогноз на месяц с неизвестными фактическими часами максимума. Точность будет рассчитана после публикации фактических ЧМ.", icon=":material/schedule:")
+elif len(verified) != len(daily):
     st.caption(f"Фактический час максимума опубликован для {len(verified)} из {len(daily)} выбранных дней; точность рассчитана только по этим дням.")
 
 st.subheader("Итоговый прогноз")
-st.caption(region.matrix_caption)
+st.caption("В ячейках — оценочная вероятность часа максимума. Синим отмечены выбранные моделью часы. Часы указаны по рыночной нумерации МСК." if verified.empty else region.matrix_caption)
 matrix_height = min(820, max(420, 74 + len(matrix) * 35))
 st.dataframe(style_matrix(matrix), height=matrix_height, width="stretch")
