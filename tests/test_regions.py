@@ -61,6 +61,14 @@ class RegionSnapshotTests(unittest.TestCase):
             raw = set(part.sort_values(["score", "market_hour"], ascending=[False, True]).market_hour.head(2))
             self.assertEqual(raw, set(part.loc[part.is_predicted, "market_hour"]))
 
+    def test_sverdlovsk_archive_uses_m2_and_corrected_metrics(self) -> None:
+        hourly = validate_snapshot(pd.read_csv(snapshot_path("sverdlovsk"), parse_dates=["date"]), "sverdlovsk")
+        daily = daily_summary(hourly)
+        archive = daily.loc[daily.date.lt("2026-09-01")]
+        self.assertEqual((int(archive.hit_at_2.sum()), int(archive.hit_segment_2plus2.sum())), (90, 100))
+        self.assertTrue((hourly.load_history_last_month == (hourly.date.dt.to_period("M") - 2).astype(str)).all())
+        self.assertTrue(hourly.model_version.str.contains("M-2", regex=False).all())
+
     def test_unlabeled_future_style_day_has_no_false_accuracy(self) -> None:
         hourly = pd.read_csv(snapshot_path("volgograd"), parse_dates=["date"])
         one_day = hourly.loc[hourly.date.eq(hourly.date.max())].copy()
@@ -115,7 +123,7 @@ class DashboardTests(unittest.TestCase):
         self.assertFalse(app.exception)
         past = [pd.Timestamp(f"2026-{m:02}-01") for m in range(1, 9)]
         app.multiselect(key="forecast_months_sverdlovsk").set_value(past).run()
-        self.assertEqual([m.value for m in app.metric], ["161", "59.6%", "64.6%", "61.5%"])
+        self.assertEqual([m.value for m in app.metric], ["161", "55.9%", "62.1%", "58.7%"])
 
         app.selectbox(key="forecast_region").select("volgograd").run()
         app.multiselect(key="forecast_months_volgograd").set_value(past).run()
@@ -145,7 +153,7 @@ class DashboardTests(unittest.TestCase):
         app = self.make_app().run()
         app.multiselect(key="forecast_months_sverdlovsk").set_value([pd.Timestamp(f"2026-{m:02}-01") for m in range(1, 10)]).run()
         self.assertFalse(app.exception)
-        self.assertEqual([m.value for m in app.metric[:3]], ["183", "59.6%", "64.6%"])
+        self.assertEqual([m.value for m in app.metric[:3]], ["183", "55.9%", "62.1%"])
         self.assertTrue(any("161 из 183" in caption.value for caption in app.caption))
 
 

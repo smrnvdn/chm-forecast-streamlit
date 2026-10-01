@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "region": "sverdlovsk",
+  "model": "CatBoost-79",
+  "availability_contract": "For forecast month M, model training and every consumption-derived feature use facts through M-2 only.",
+  "period_rebuilt": "2026-01 through 2026-08",
+  "archive_days": 161,
+  "hit_at_2": "90/161 = 55.90%",
+  "hit_segment_2plus2": "100/161 = 62.11%",
+  "september_fact_available": false,
+  "source_sha256": "2bf6c4be9c6b480a58e718a0a75c61d74cc3eae3125d79b3b137844f87cc9f5c",
+  "snapshot_sha256": "7df0105d8f37cd3dc0568ef6687faf102356299ae332020d02d43d9248bf4a57"
+}

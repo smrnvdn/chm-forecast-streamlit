@@ -37,7 +37,7 @@ REGIONS = {
         score_kind="probability",
         about_markdown="""**CatBoost-79** оценивает вероятность часа максимума для Свердловской области. Модель учитывает календарь и сезонность, график замерных часов, план РСВ, погоду и статистику завершённых периодов. CatBoost позволяет учитывать совместное влияние этих факторов и нелинейные зависимости между ними.
 
-Для прогноза на сентябрь 2026 используется история по июль включительно (M−2). Фактический ЧМ прогнозируемого месяца не участвует в расчёте.
+Для каждого прогнозируемого месяца используется история по месяц M−2 включительно: например, для сентября 2026 — по июль. Фактический ЧМ прогнозируемого месяца не участвует в расчёте.
 
 Модель ранжирует допустимые часы каждого рабочего дня. При одном замерном интервале выбираются два часа; при двух — по два часа в каждом. Вероятности помогают оценить, на каких часах сосредоточен прогноз.
 
@@ -100,7 +100,7 @@ def validate_snapshot(hourly: pd.DataFrame, region_code: str) -> pd.DataFrame:
     """Reject incomplete/misaligned snapshots before showing any metric."""
     config = REGIONS[region_code]
     required = {"date", "market_hour", "segment", "segment_count", "is_predicted",
-                "is_actual", "hit_at_2", "hit_segment_2plus2"}
+                "is_actual", "hit_at_2", "hit_segment_2plus2", "load_history_last_month", "model_version"}
     required.add("probability" if config.score_kind == "probability" else "score")
     missing = required.difference(hourly.columns)
     if missing:
@@ -138,6 +138,12 @@ def validate_snapshot(hourly: pd.DataFrame, region_code: str) -> pd.DataFrame:
         raise ValueError("Вероятности вне диапазона 0–1")
     if config.score_kind == "probability" and not np.allclose(group.probability.sum(), 1, atol=1e-8):
         raise ValueError("Вероятности допустимых часов должны давать 100% за каждый день")
+    expected_history_month = (hourly["date"].dt.to_period("M") - 2).astype(str)
+    # The Sverdlovsk archive was rebuilt under this contract and keeps a
+    # row-level audit field. Older regional archives may not expose that
+    # historical metadata for completed months, so do not reject them here.
+    if region_code == "sverdlovsk" and not hourly["load_history_last_month"].astype(str).eq(expected_history_month).all():
+        raise ValueError("Снимок нарушает правило M-2 для факта и зависимой истории")
     # Display rounding may create visual ties, but selected hours must always
     # remain the top two *unrounded* model scores inside each eligible segment.
     for _, segment in hourly.groupby(["date", "segment"]):
