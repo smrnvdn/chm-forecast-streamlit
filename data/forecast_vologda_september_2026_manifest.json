@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "days": 22,
+  "candidate_rows": 264,
+  "attempts22": 88,
+  "attempts2": 44,
+  "fact_available": false,
+  "labels_read": false,
+  "train_cutoff_exclusive": "2026-08-01",
+  "lower_inclusive": "2023-08-01",
+  "load_history_last_month": "2026-07",
+  "weather_station": "27037",
+  "weather_mode": "observed retrospective proxy; not an issued September weather forecast",
+  "weather_source_sha256": "21361514b4a4758c1fac3364d97c30266c60f19bc57943008de6333fdefb9287",
+  "price_product": "trade_region_spub / Вологодская область / buyer price / eur / RUB/MWh",
+  "price_product_matches_training": true,
+  "model_sha256": "42187c7955f9c0d199aaf3b12cf81a4f5f7c46252c1a90678ff39448af6d81ae",
+  "calibration": {
+    "method": "day_standardized",
+    "temperature": 0.5597418011577657,
+    "selection_fit_days": 117,
+    "validation_days": 110,
+    "selection_validation_NLL": {
+      "raw": 2.1136238978791924,
+      "day_standardized": 2.1091542125500786
+    },
+    "refit_last": "2024-11-29",
+    "refit_days": 227,
+    "no_2025_2026_calibration_fit": true,
+    "source": "a207772adda32592bbea4aa389103fc640632c6114e8dcf6507e19a68de60d07",
+    "formula": "softmax(((score-day_mean)/day_sample_sd)/temperature)",
+    "probability_meaning": "Estimated daily distribution over all eligible hours, not guaranteed calibrated probabilities",
+    "recipe_selection_adaptive": true
+  },
+  "forecast_issued_at": null,
+  "snapshot_sha256": "60d935b5ec721f124d517ae37a420d3be471dbee5de146d96fb4faa275154012"
+}
