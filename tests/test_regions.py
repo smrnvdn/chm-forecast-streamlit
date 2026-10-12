@@ -145,8 +145,7 @@ class DashboardTests(unittest.TestCase):
                 self.assertEqual(app.query_params["other"], ["preserved"])
                 self.assertEqual([m.value for m in app.metric], september_metrics[code])
                 self.assertEqual(app.multiselect(key=f"forecast_months_{code}").value, [pd.Timestamp("2026-09-01")])
-                self.assertTrue(any("качество прогноза" in notice.value for notice in app.info))
-                self.assertFalse(any("неизвестными фактическими" in notice.value for notice in app.info))
+                self.assertFalse(any("расчёт выполнен после окончания месяца с фактической погодой" in notice.value for notice in app.info))
         app = self.make_app()
         app.query_params["region"] = "unknown"
         app.run()
