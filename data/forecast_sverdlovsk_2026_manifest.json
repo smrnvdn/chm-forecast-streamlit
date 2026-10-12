@@ -7,7 +7,35 @@
   "archive_days": 161,
   "hit_at_2": "90/161 = 55.90%",
   "hit_segment_2plus2": "100/161 = 62.11%",
-  "september_fact_available": false,
+  "september_fact_available": true,
   "source_sha256": "2bf6c4be9c6b480a58e718a0a75c61d74cc3eae3125d79b3b137844f87cc9f5c",
-  "snapshot_sha256": "7df0105d8f37cd3dc0568ef6687faf102356299ae332020d02d43d9248bf4a57"
+  "snapshot_sha256": "7df0105d8f37cd3dc0568ef6687faf102356299ae332020d02d43d9248bf4a57",
+  "september_labels_read": true,
+  "september_actual_days": 22,
+  "september_hit_at_2": {
+    "hits": 14,
+    "denominator": 22,
+    "percent": 63.64
+  },
+  "september_hit_segment_2plus2": {
+    "hits": 17,
+    "denominator": 22,
+    "percent": 77.27
+  },
+  "september_actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Свердловская область",
+    "participant": "АО \"ЕЭНС\" (г.Екатеринбург)",
+    "gtp": "PEKELSK1",
+    "source_file": "sverdlovsk_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_EKATSBKO_65_calcfacthour.xlsx",
+    "source_sha256": "406b263defd0ccdfe6374ed3be2fcf8dabbc11153cde53857aec51b20262b2ee",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "current_snapshot_sha256": "25510ae76ade51a04b4949cca265d53b3b50f6481d762335afdcaf4f735669cd"
 }

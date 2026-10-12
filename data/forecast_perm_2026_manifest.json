@@ -73,5 +73,34 @@
   },
   "snapshot_sha256": "4725450025c694e8a31c178e670aed7063bfae99dea06e29babedbc68bd5c527",
   "release_audit_sha256": "d36d5002cc446694d18c538a711a5070e84b23ed27c6bec488e9da7def9e82a9",
-  "finalist_hpo_audit_sha256": "7ac83826413be014601d096764486370caf363f1358b2913d4e0e0e6be1b1025"
+  "finalist_hpo_audit_sha256": "7ac83826413be014601d096764486370caf363f1358b2913d4e0e0e6be1b1025",
+  "september_fact_available": true,
+  "september_labels_read": true,
+  "september_actual_days": 22,
+  "september_hit_at_2": {
+    "hits": 6,
+    "denominator": 22,
+    "percent": 27.27
+  },
+  "september_hit_segment_2plus2": {
+    "hits": 12,
+    "denominator": 22,
+    "percent": 54.55
+  },
+  "september_actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Пермский край",
+    "participant": "ПАО \"Пермэнергосбыт\"",
+    "gtp": "PPERMENE",
+    "source_file": "perm_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_PERMENER_57_calcfacthour.xlsx",
+    "source_sha256": "d9a2a9795de7cf3bac2a1ee7db5f5453a82f759bc2613fa3496e828b06d026ee",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "current_snapshot_sha256": "f0a57070bd107ce527858db8e545f747a3a1dc43f86d50dc71f94ca0f0da9c80"
 }

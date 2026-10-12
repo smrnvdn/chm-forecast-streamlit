@@ -21,8 +21,8 @@
     "2026-01",
     "2026-09"
   ],
-  "labelled_days": 161,
-  "unlabelled_september_days": 22,
+  "labelled_days": 183,
+  "unlabelled_september_days": 0,
   "candidate_rows": 2232,
   "measured_hit2": 86,
   "measured_hit22": 90,
@@ -55,6 +55,35 @@
   "price": "Same hybrid price in training and serving: PVOLOGEN throughOct2023; daily Vologda subject buyer sinceNov2023",
   "forecast_horizon": "nextday; monthly display is aggregation; archive inputs supplied retrospectively",
   "actual_issue_time": null,
-  "labels_read_for_september": false,
-  "generated_at_utc": "2026-10-07T20:12:23.279006+00:00"
+  "labels_read_for_september": true,
+  "generated_at_utc": "2026-10-07T20:12:23.279006+00:00",
+  "september_fact_available": true,
+  "september_labels_read": true,
+  "september_actual_days": 22,
+  "september_hit_at_2": {
+    "hits": 9,
+    "denominator": 22,
+    "percent": 40.91
+  },
+  "september_hit_segment_2plus2": {
+    "hits": 14,
+    "denominator": 22,
+    "percent": 63.64
+  },
+  "september_actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Вологодская область",
+    "participant": "ООО \"ССК\"",
+    "gtp": "PVOLOGEN",
+    "source_file": "vologda_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_NORDSBYT_19_calcfacthour.xlsx",
+    "source_sha256": "3daf60278ad425531eb42d79cb901ed254aac9a59ad2fd583d2d54af9a243f0a",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "current_snapshot_sha256": "fdbcfbfbb2049a812315a9909e93b8a02e838da4028afeaecb254cd7a73515d2"
 }

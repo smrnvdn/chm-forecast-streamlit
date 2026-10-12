@@ -67,7 +67,7 @@ except (FileNotFoundError, ValueError) as exc:
     st.stop()
 months = available_months(hourly_all)
 unverified_months = sorted(hourly_all.loc[~hourly_all.fact_available, "month_start"].unique())
-default_months = [pd.Timestamp(unverified_months[-1])] if unverified_months else months
+default_months = [pd.Timestamp(unverified_months[-1] if unverified_months else months[-1])]
 
 with st.expander("О модели и данных", expanded=False, icon=":material/info:"):
     st.markdown(region.about_markdown)
@@ -96,7 +96,7 @@ verified = daily.loc[daily.fact_available]
 
 
 def rate_text(values: pd.Series) -> str:
-    return f"{values.mean():.1%}" if len(values) else "—"
+    return f"{int(values.sum())}/{len(values)} ({values.mean():.1%})" if len(values) else "—"
 
 with st.container(horizontal=True):
     two_segments = verified.loc[verified.segment_count.eq(2)]
@@ -110,7 +110,12 @@ if verified.empty:
 elif len(verified) != len(daily):
     st.caption(f"Фактический час максимума опубликован для {len(verified)} из {len(daily)} выбранных дней; точность рассчитана только по этим дням.")
 
+if "input_mode" in hourly and hourly.input_mode.eq("ideal_weather_proxy").any():
+    proxy_months = ", ".join(month_label(month) for month in sorted(hourly.loc[hourly.input_mode.eq("ideal_weather_proxy"), "month_start"].unique()))
+    st.info(f"{proxy_months}: расчёт выполнен после окончания месяца с фактической погодой. Его можно использовать для ретроспективного анализа; качество прогноза, выпущенного заранее, этим расчётом не подтверждено.", icon=":material/info:")
+
 st.subheader("Итоговый прогноз")
 st.caption("В ячейках — оценочная вероятность часа максимума. Синим отмечены выбранные моделью часы. Часы указаны по рыночной нумерации МСК." if verified.empty else region.matrix_caption)
+st.caption("Столбец «08:00» обозначает рыночный час № 8: интервал 07:00–08:00 МСК. Остальные столбцы читаются аналогично. Проценты округлены; 0% не означает невозможность события.")
 matrix_height = min(820, max(420, 74 + len(matrix) * 35))
 st.dataframe(style_matrix(matrix), height=matrix_height, width="stretch")

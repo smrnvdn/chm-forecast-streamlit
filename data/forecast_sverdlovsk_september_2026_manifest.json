@@ -6,8 +6,8 @@
   "candidate_rows": 264,
   "attempts22": 88,
   "global_attempts2": 44,
-  "labels_read": false,
-  "fact_available": false,
+  "labels_read": true,
+  "fact_available": true,
   "train_last_allowed": "2026-07-31",
   "weather": "RP5 observed/interpolated ideal forecast proxy",
   "generated_at_utc": "2026-10-01T17:29:32.854225+00:00",
@@ -107,5 +107,38 @@
   "probability_temperature": 1.0,
   "probability_calibration": "Uncalibrated daily softmax; estimates only",
   "model_sha256": "9487c4cc563b02e70afcb15b1d2d39d79e8e17a189156c9d1cd6a808e1d428f4",
-  "source_sha256": "2bf6c4be9c6b480a58e718a0a75c61d74cc3eae3125d79b3b137844f87cc9f5c"
+  "source_sha256": "2bf6c4be9c6b480a58e718a0a75c61d74cc3eae3125d79b3b137844f87cc9f5c",
+  "actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Свердловская область",
+    "participant": "АО \"ЕЭНС\" (г.Екатеринбург)",
+    "gtp": "PEKELSK1",
+    "source_file": "sverdlovsk_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_EKATSBKO_65_calcfacthour.xlsx",
+    "source_sha256": "406b263defd0ccdfe6374ed3be2fcf8dabbc11153cde53857aec51b20262b2ee",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "actual_evaluation": {
+    "days": 22,
+    "hit_at_2": {
+      "hits": 14,
+      "denominator": 22,
+      "percent": 63.64
+    },
+    "hit_segment_2plus2": {
+      "hits": 17,
+      "denominator": 22,
+      "percent": 77.27
+    },
+    "interpretation": "Retrospective score of saved predictions; not operational accuracy for forecasts issued before each day.",
+    "input_mode": "ideal_weather_proxy",
+    "forecast_issued_at": null,
+    "snapshot_sha256": "25510ae76ade51a04b4949cca265d53b3b50f6481d762335afdcaf4f735669cd"
+  },
+  "labeled_csv_sha256": "25510ae76ade51a04b4949cca265d53b3b50f6481d762335afdcaf4f735669cd"
 }

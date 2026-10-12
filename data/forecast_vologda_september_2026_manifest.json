@@ -4,8 +4,8 @@
   "candidate_rows": 264,
   "attempts22": 88,
   "attempts2": 44,
-  "fact_available": false,
-  "labels_read": false,
+  "fact_available": true,
+  "labels_read": true,
   "train_cutoff_exclusive": "2026-08-01",
   "lower_inclusive": "2023-08-01",
   "load_history_last_month": "2026-07",
@@ -33,5 +33,38 @@
     "recipe_selection_adaptive": true
   },
   "forecast_issued_at": null,
-  "snapshot_sha256": "60d935b5ec721f124d517ae37a420d3be471dbee5de146d96fb4faa275154012"
+  "snapshot_sha256": "60d935b5ec721f124d517ae37a420d3be471dbee5de146d96fb4faa275154012",
+  "actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Вологодская область",
+    "participant": "ООО \"ССК\"",
+    "gtp": "PVOLOGEN",
+    "source_file": "vologda_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_NORDSBYT_19_calcfacthour.xlsx",
+    "source_sha256": "3daf60278ad425531eb42d79cb901ed254aac9a59ad2fd583d2d54af9a243f0a",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "actual_evaluation": {
+    "days": 22,
+    "hit_at_2": {
+      "hits": 9,
+      "denominator": 22,
+      "percent": 40.91
+    },
+    "hit_segment_2plus2": {
+      "hits": 14,
+      "denominator": 22,
+      "percent": 63.64
+    },
+    "interpretation": "Retrospective score of saved predictions; not operational accuracy for forecasts issued before each day.",
+    "input_mode": "ideal_weather_proxy",
+    "forecast_issued_at": null,
+    "snapshot_sha256": "fdbcfbfbb2049a812315a9909e93b8a02e838da4028afeaecb254cd7a73515d2"
+  },
+  "labeled_csv_sha256": "fdbcfbfbb2049a812315a9909e93b8a02e838da4028afeaecb254cd7a73515d2"
 }

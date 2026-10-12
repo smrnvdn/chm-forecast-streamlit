@@ -6,8 +6,8 @@
   "candidate_rows": 264,
   "attempts22": 88,
   "global_attempts2": 44,
-  "labels_read": false,
-  "fact_available": false,
+  "labels_read": true,
+  "fact_available": true,
   "train_last_allowed": "2026-07-31",
   "weather": "RP5 observed/interpolated ideal forecast proxy",
   "generated_at_utc": "2026-10-01T17:27:22.315496+00:00",
@@ -68,5 +68,38 @@
   "inference_training_feature_parity_august": true,
   "regional_RSV_plan": true,
   "RSV_product_change": true,
-  "model_sha256": "f740ecfaa9b69d7040e006e7296e959022de77e38f3d52e3559236d29ce6d611"
+  "model_sha256": "f740ecfaa9b69d7040e006e7296e959022de77e38f3d52e3559236d29ce6d611",
+  "actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Волгоградская область",
+    "participant": "ПАО \"Волгоградэнергосбыт\"",
+    "gtp": "PVOLGOGE",
+    "source_file": "volgograd_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_VOLGOGEN_18_calcfacthour.xlsx",
+    "source_sha256": "527261330fe2af760b5a5b71d57748b153b819d963e68354572cef3432c4e3a9",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "actual_evaluation": {
+    "days": 22,
+    "hit_at_2": {
+      "hits": 7,
+      "denominator": 22,
+      "percent": 31.82
+    },
+    "hit_segment_2plus2": {
+      "hits": 10,
+      "denominator": 22,
+      "percent": 45.45
+    },
+    "interpretation": "Retrospective score of saved predictions; not operational accuracy for forecasts issued before each day.",
+    "input_mode": "ideal_weather_proxy",
+    "forecast_issued_at": null,
+    "snapshot_sha256": "33811267ac214bef00a88ded249d3be547928b82dfaa298ee87f049e4da575d4"
+  },
+  "labeled_csv_sha256": "33811267ac214bef00a88ded249d3be547928b82dfaa298ee87f049e4da575d4"
 }

@@ -34,5 +34,34 @@
     "2026-08.csv": "235117b43799b257ff5c1883f0a54852909bafe201909d77b31b21eadff11b66"
   },
   "saved_daily_sha256": "efc173779840612d3b1f8c342561b9a1c152d89ac80e3f0c54fc85c6aa47151f",
-  "snapshot_sha256": "9a5827e944f71e5503fd15f68328fb7c6748667a6afeda4aaa3a25af6d340b86"
+  "snapshot_sha256": "9a5827e944f71e5503fd15f68328fb7c6748667a6afeda4aaa3a25af6d340b86",
+  "september_fact_available": true,
+  "september_labels_read": true,
+  "september_actual_days": 22,
+  "september_hit_at_2": {
+    "hits": 7,
+    "denominator": 22,
+    "percent": 31.82
+  },
+  "september_hit_segment_2plus2": {
+    "hits": 10,
+    "denominator": 22,
+    "percent": 45.45
+  },
+  "september_actual_source": {
+    "product": "АТС calcfacthour_regions",
+    "product_page": "https://www.atsenergo.ru/results/market/calcfacthour?period=202609",
+    "period": "2026-09",
+    "territory": "Волгоградская область",
+    "participant": "ПАО \"Волгоградэнергосбыт\"",
+    "gtp": "PVOLGOGE",
+    "source_file": "volgograd_calcfacthour.xlsx",
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202609_VOLGOGEN_18_calcfacthour.xlsx",
+    "source_sha256": "527261330fe2af760b5a5b71d57748b153b819d963e68354572cef3432c4e3a9",
+    "retrieved_at_utc": "2026-10-12T09:25:16.106352+00:00",
+    "actual_days": 22,
+    "unique_dates": 22,
+    "hour_mapping": "ATS market hour 1–24 maps directly to the interface market_hour 1–24; the interface labels market hour h as [h-1, h) MSK."
+  },
+  "current_snapshot_sha256": "33811267ac214bef00a88ded249d3be547928b82dfaa298ee87f049e4da575d4"
 }
