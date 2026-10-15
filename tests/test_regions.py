@@ -8,12 +8,21 @@ from pathlib import Path
 import pandas as pd
 from streamlit.testing.v1 import AppTest
 
-from src.forecast_data import REGIONS, daily_summary, snapshot_path, validate_snapshot
+from src.forecast_data import REGIONS, available_months, daily_summary, month_label, snapshot_path, validate_snapshot
 from src.presentation import forecast_matrix
 
 
 class RegionSnapshotTests(unittest.TestCase):
     def test_all_snapshots_have_one_target_and_valid_attempts(self) -> None:
+        expected_q4_2025 = {
+            "sverdlovsk": (35, 42),
+            "volgograd": (31, 46),
+            "perm": (56, 58),
+            "vologda": (30, 40),
+        }
+        expected_months = [
+            pd.Timestamp(f"2025-{month:02}-01") for month in (10, 11, 12)
+        ] + [pd.Timestamp(f"2026-{month:02}-01") for month in range(1, 10)]
         expected_september = {
             "sverdlovsk": (14, 17),
             "volgograd": (7, 10),
@@ -23,11 +32,25 @@ class RegionSnapshotTests(unittest.TestCase):
         for code in REGIONS:
             with self.subTest(region=code):
                 hourly = validate_snapshot(pd.read_csv(snapshot_path(code), parse_dates=["date"]), code)
+                hourly["month_start"] = pd.to_datetime(hourly["month"] + "-01")
                 daily = daily_summary(hourly)
-                self.assertEqual(len(daily), 183)
-                self.assertEqual(len(hourly), 2232)
+                self.assertEqual(available_months(hourly), expected_months)
+                q4_2025 = hourly.loc[hourly.date.dt.to_period("Q").eq(pd.Period("2025Q4"))]
+                q4_daily = daily.loc[daily.date.dt.to_period("Q").eq(pd.Period("2025Q4"))]
+                self.assertEqual(len(q4_daily), 64)
+                self.assertEqual(len(q4_2025), 776)
+                expected_history = (q4_2025.date.dt.to_period("M") - 2).astype(str)
+                self.assertTrue(q4_2025.load_history_last_month.astype(str).eq(expected_history).all())
+                self.assertEqual(
+                    (int(q4_daily.hit_at_2.sum()), int(q4_daily.hit_segment_2plus2.sum())),
+                    expected_q4_2025[code],
+                )
+                current_2026 = hourly.loc[hourly.date.dt.year.eq(2026)]
+                current_2026_daily = daily.loc[daily.date.dt.year.eq(2026)]
+                self.assertEqual(len(current_2026_daily), 183)
+                self.assertEqual(len(current_2026), 2232)
                 matrix = forecast_matrix(hourly, REGIONS[code].score_kind)
-                self.assertEqual(matrix.shape, (183, 14))
+                self.assertEqual(matrix.shape, (247, 14))
                 september = hourly.loc[hourly.date.dt.month.eq(9)]
                 self.assertEqual(september.date.nunique(), 22)
                 self.assertTrue(september.fact_available.all())
@@ -40,11 +63,12 @@ class RegionSnapshotTests(unittest.TestCase):
                 self.assertEqual(set(september.market_hour), set(range(8, 16)) | set(range(18, 22)))
                 self.assertTrue(september.groupby("date").is_predicted.sum().eq(4).all())
                 self.assertEqual(len(forecast_matrix(september, "probability").attrs["actual_cells"]), 22)
-                self.assertEqual(len(matrix.attrs["actual_cells"]), 183)
+                self.assertEqual(len(matrix.attrs["actual_cells"]), 247)
 
     def test_volgograd_frozen_metrics_and_market_hour_mapping(self) -> None:
         hourly = validate_snapshot(pd.read_csv(snapshot_path("volgograd"), parse_dates=["date"]), "volgograd")
         daily = daily_summary(hourly)
+        daily = daily.loc[daily.date.dt.year.eq(2026)]
         self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (89, 104))
         self.assertEqual(int(hourly.market_hour.min()), 8)
         self.assertEqual(int(hourly.market_hour.max()), 21)
@@ -66,8 +90,9 @@ class RegionSnapshotTests(unittest.TestCase):
     def test_perm_frozen_metrics_and_calibration_preserves_picks(self) -> None:
         hourly = validate_snapshot(pd.read_csv(snapshot_path("perm"), parse_dates=["date"]), "perm")
         daily = daily_summary(hourly)
+        daily = daily.loc[daily.date.dt.year.eq(2026)]
         self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (105, 125))
-        self.assertEqual(sorted(hourly.month.unique()), [f"2026-{m:02}" for m in range(1, 10)])
+        self.assertEqual(sorted(hourly.loc[hourly.date.dt.year.eq(2026), "month"].unique()), [f"2026-{m:02}" for m in range(1, 10)])
         self.assertTrue((hourly.load_history_last_month == (hourly.date.dt.to_period("M") - 2).astype(str)).all())
         for (_, _), part in hourly.groupby(["date", "segment"]):
             raw = set(part.sort_values(["score", "market_hour"], ascending=[False, True]).market_hour.head(2))
@@ -76,14 +101,14 @@ class RegionSnapshotTests(unittest.TestCase):
     def test_sverdlovsk_archive_uses_m2_and_corrected_metrics(self) -> None:
         hourly = validate_snapshot(pd.read_csv(snapshot_path("sverdlovsk"), parse_dates=["date"]), "sverdlovsk")
         daily = daily_summary(hourly)
-        archive = daily.loc[daily.date.lt("2026-09-01")]
+        archive = daily.loc[daily.date.dt.year.eq(2026) & daily.date.lt("2026-09-01")]
         self.assertEqual((int(archive.hit_at_2.sum()), int(archive.hit_segment_2plus2.sum())), (90, 100))
         self.assertTrue((hourly.load_history_last_month == (hourly.date.dt.to_period("M") - 2).astype(str)).all())
         self.assertTrue(hourly.model_version.str.contains("M-2", regex=False).all())
 
     def test_vologda_frozen_metrics_probability_order_and_m2(self) -> None:
         hourly = validate_snapshot(pd.read_csv(snapshot_path("vologda"), parse_dates=["date"]), "vologda")
-        archive = daily_summary(hourly).loc[lambda data: data.date.lt("2026-09-01")]
+        archive = daily_summary(hourly).loc[lambda data: data.date.dt.year.eq(2026) & data.date.lt("2026-09-01")]
         self.assertEqual((len(archive), int(archive.hit_at_2.sum()), int(archive.hit_segment_2plus2.sum())), (161, 86, 90))
         self.assertTrue(hourly.model_version.eq("VOLOGDA-p000-420-no-wind-M-2").all())
         for _, day in hourly.groupby("date"):
@@ -145,6 +170,8 @@ class DashboardTests(unittest.TestCase):
                 self.assertEqual(app.query_params["other"], ["preserved"])
                 self.assertEqual([m.value for m in app.metric], september_metrics[code])
                 self.assertEqual(app.multiselect(key=f"forecast_months_{code}").value, [pd.Timestamp("2026-09-01")])
+                q4_2025_labels = {month_label(pd.Timestamp(f"2025-{month:02}-01")) for month in (10, 11, 12)}
+                self.assertTrue(q4_2025_labels.issubset(set(app.multiselect(key=f"forecast_months_{code}").options)))
                 self.assertFalse(any("расчёт выполнен после окончания месяца с фактической погодой" in notice.value for notice in app.info))
         app = self.make_app()
         app.query_params["region"] = "unknown"

@@ -1,0 +1,160 @@
+{
+  "status": "passed",
+  "scope": "Add saved historical model results for October–December 2025 in all four regional snapshots.",
+  "months": [
+    "2025-10",
+    "2025-11",
+    "2025-12"
+  ],
+  "training_fact_cutoff": "M-2 per forecast month",
+  "ui_code_changed": false,
+  "regions": {
+    "sverdlovsk": {
+      "model": "CatBoost-79 · M-2",
+      "method": "CatBoost-79 · M-2; published-recipe A_full monthly backtest",
+      "target_days": 64,
+      "hourly_rows": 776,
+      "hit_at_2": 35,
+      "hit_segment_2plus2": 42,
+      "months": {
+        "2025-10": {
+          "target_days": 23,
+          "hit_at_2": 9,
+          "hit_segment_2plus2": 9,
+          "hourly_rows": 322
+        },
+        "2025-11": {
+          "target_days": 19,
+          "hit_at_2": 14,
+          "hit_segment_2plus2": 18,
+          "hourly_rows": 190
+        },
+        "2025-12": {
+          "target_days": 22,
+          "hit_at_2": 12,
+          "hit_segment_2plus2": 15,
+          "hourly_rows": 264
+        }
+      },
+      "source_sha256": {
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-10_full_old/hourly.csv.gz": "5f7539756cbdba3e074d94bbe67216d45cd1c441914d316b51a847402cc49e0a",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-10_full_old/daily.csv": "326e8d27bd095e74aa764ce4410849429fca9fe1c32b02581ed76eea2285bf18",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-10_full_old/fold.json": "2d5bb30737daa742752da892c57a0ca9c6a98d22ab6475e91e3a8ab0ae812fde",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-11_full_old/hourly.csv.gz": "72e53022bec97d50d024ad6c918b96f0f5a409fd12ca2a35c4fb8754df6f7e7e",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-11_full_old/daily.csv": "9abe7da8d49e37087d3072ef0304167a49fdf465e14533275e3e1d0fc6da5b0b",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-11_full_old/fold.json": "2717a8fe98c5b808852b67bffbc26f7573c265c8fced4de634d4d2970bf597a6",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-12_full_old/hourly.csv.gz": "9db727e411ad1fe21f07139330d8bcb6f5f7311347e7e51c09d17a6a5128db26",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-12_full_old/daily.csv": "8f5863a60bca76b4d8bab33c7519c75f47c4d6162530d068a1c745ac073bd883",
+        "outputs/rsv_source_retraining_v1/runs/90ac5552035bc1e3/folds/sverdlovsk_2025-12_full_old/fold.json": "4c35e0bcab49d4cbe90988b7762059cb1084f0abe54d2daa3fa65b2d8bd8b516"
+      },
+      "previous_snapshot_sha256": "25510ae76ade51a04b4949cca265d53b3b50f6481d762335afdcaf4f735669cd",
+      "snapshot_sha256_after_append": "df635a0c722dda837dc8585b4d8df5c41c054fae46564980402f3b7e5e050724"
+    },
+    "volgograd": {
+      "model": "m0399",
+      "method": "m0399; saved monthly scores and existing softmax calibration",
+      "target_days": 64,
+      "hourly_rows": 776,
+      "hit_at_2": 31,
+      "hit_segment_2plus2": 46,
+      "months": {
+        "2025-10": {
+          "target_days": 23,
+          "hit_at_2": 13,
+          "hit_segment_2plus2": 13,
+          "hourly_rows": 322
+        },
+        "2025-11": {
+          "target_days": 19,
+          "hit_at_2": 13,
+          "hit_segment_2plus2": 19,
+          "hourly_rows": 190
+        },
+        "2025-12": {
+          "target_days": 22,
+          "hit_at_2": 5,
+          "hit_segment_2plus2": 14,
+          "hourly_rows": 264
+        }
+      },
+      "source_sha256": {
+        "outputs/volgograd_mega_search_v1/stage_C_monthly_scores/m0399/2025-10.csv": "6def0753858d2f9f49ed6516cd393990d28417b11a9eb7500d9d8a9651099713",
+        "outputs/volgograd_mega_search_v1/stage_C_monthly_scores/m0399/2025-11.csv": "f291d18f1e7808a5fd896a011c00fa032c2ea62029c8bfb7c45430bf21c682e4",
+        "outputs/volgograd_mega_search_v1/stage_C_monthly_scores/m0399/2025-12.csv": "c145b11a8364b08dec5b23f0d2b5a1798149c960f8708d904539a5f7a5e3d2bc",
+        "outputs/volgograd_probability_calibration_2026_09/manifest.json": "76b3793929f16be4f6007523812e9322b65636d0655079eee618672a67de42a0"
+      },
+      "previous_snapshot_sha256": "33811267ac214bef00a88ded249d3be547928b82dfaa298ee87f049e4da575d4",
+      "snapshot_sha256_after_append": "9dd76f5661d2294ff5d43d63c79d6f4bed259724f3ef29c426a6ae088d871b15"
+    },
+    "perm": {
+      "model": "E-PERM-025",
+      "method": "E-PERM-025; three month-specific fits with frozen 120-tree/18-feature recipe and M-2 label cutoffs",
+      "target_days": 64,
+      "hourly_rows": 776,
+      "hit_at_2": 56,
+      "hit_segment_2plus2": 58,
+      "months": {
+        "2025-10": {
+          "target_days": 23,
+          "hit_at_2": 18,
+          "hit_segment_2plus2": 18,
+          "hourly_rows": 322
+        },
+        "2025-11": {
+          "target_days": 19,
+          "hit_at_2": 19,
+          "hit_segment_2plus2": 19,
+          "hourly_rows": 190
+        },
+        "2025-12": {
+          "target_days": 22,
+          "hit_at_2": 19,
+          "hit_segment_2plus2": 21,
+          "hourly_rows": 264
+        }
+      },
+      "source_sha256": {
+        "regions/perm/reports/models/deadline_search_v2_2026-09-30/feature_view.csv": "f9b3b1367f693e8358354bb7d5d4dd942f2cbf06562155b9790baeb3a0f378a8",
+        "regions/perm/reports/models/perm_streamlit_release_v1_2026-09-30/release_audit.json": "d36d5002cc446694d18c538a711a5070e84b23ed27c6bec488e9da7def9e82a9"
+      },
+      "previous_snapshot_sha256": "f0a57070bd107ce527858db8e545f747a3a1dc43f86d50dc71f94ca0f0da9c80",
+      "snapshot_sha256_after_append": "abc32e7e88529f76f4e77b0e3bf200ddd25f71b47b37e1fe7d9f56d0bf64aa40"
+    },
+    "vologda": {
+      "model": "VOLOGDA-p000-420-no-wind-M-2",
+      "method": "p000; saved month-specific backtest scores, M-2 and contiguous subject measurement-hour segments",
+      "target_days": 64,
+      "hourly_rows": 776,
+      "hit_at_2": 30,
+      "hit_segment_2plus2": 40,
+      "months": {
+        "2025-10": {
+          "target_days": 23,
+          "hit_at_2": 7,
+          "hit_segment_2plus2": 7,
+          "hourly_rows": 322
+        },
+        "2025-11": {
+          "target_days": 19,
+          "hit_at_2": 9,
+          "hit_segment_2plus2": 15,
+          "hourly_rows": 190
+        },
+        "2025-12": {
+          "target_days": 22,
+          "hit_at_2": 14,
+          "hit_segment_2plus2": 18,
+          "hourly_rows": 264
+        }
+      },
+      "source_sha256": {
+        "regions/vologda/data/processed/vologda_dataset_v1.csv": "fc1c82c8f036a683d0f171aa6c68592c65f9e217d2b9e4925a01796cfc3c2cb9",
+        "regions/vologda/reports/evaluation/final_tuning_v1/p000/fold_2025-10.json.gz": "7fa3eb81ae0f8baf32a2806fc0ec2c16c89918799ceb711a2aff71bbb2944fde",
+        "regions/vologda/reports/evaluation/final_tuning_v1/p000/fold_2025-11.json.gz": "ade026ea6f1e15bc5391c8d4ae8db6fc3c1fd02273bb10e70b7fe64261c5cbbd",
+        "regions/vologda/reports/evaluation/final_tuning_v1/p000/fold_2025-12.json.gz": "1585f86abb5076e3bb88aa6d68464247110bd5aef0ffc1e0465e5fc33efe8a4f"
+      },
+      "previous_snapshot_sha256": "fdbcfbfbb2049a812315a9909e93b8a02e838da4028afeaecb254cd7a73515d2",
+      "snapshot_sha256_after_append": "52a971c0f393c617b3f9eb335b65b48db881574ba36a3e69f1b8b4335fec2a46"
+    }
+  }
+}
