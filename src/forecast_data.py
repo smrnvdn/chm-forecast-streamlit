@@ -89,6 +89,21 @@ REGIONS = {
 В интерфейсе представлены сохранённые ретроспективные расчёты. За сентябрь 2026 года показаны официальные фактические часы АТС и рассчитанные по ним попадания.""",
         matrix_caption="В ячейках — оценочная вероятность часа максимума; за каждый день сумма до округления равна 100%. Синим отмечен прогноз; зелёным — фактический час максимума. Галочка означает попадание прогноза в факт. Часы указаны по рыночной нумерации МСК.",
     ),
+    "kemerovo": RegionConfig(
+        name="Кемеровская область",
+        genitive="Кемеровской области",
+        snapshot_file="forecast_kemerovo_2026.csv",
+        model_label="CatBoost",
+        score_kind="probability",
+        about_markdown="""**CatBoost** оценивает, в какие часы наиболее вероятен максимум потребления Кемеровской области. Модель учитывает календарь и сезонность, замерные интервалы, температуру, влажность, ветер и исторический профиль нагрузки.
+
+История потребления заканчивается за два месяца до прогнозируемого месяца: для сентября используется история по июль включительно.
+
+В таблице показаны оценочные вероятности по допустимым часам дня; их сумма до округления равна 100%. При одном замерном интервале выбираются два часа, при двух — по два часа в каждом.
+
+Показываются рабочие замерные дни. Прочерк означает час вне утверждённых интервалов. Синим выделен прогноз, зелёным — фактический максимум после публикации результатов. Время указано по Москве: «08:00» соответствует интервалу 07:00–08:00.""",
+        matrix_caption="В ячейках — оценочная вероятность часа максимума; за каждый день сумма до округления равна 100%. Синим отмечен прогноз; зелёным — фактический час максимума. Галочка означает попадание прогноза в факт. Часы указаны по рыночной нумерации МСК.",
+    ),
 }
 
 
@@ -157,7 +172,7 @@ def validate_snapshot(hourly: pd.DataFrame, region_code: str) -> pd.DataFrame:
     # The Sverdlovsk archive was rebuilt under this contract and keeps a
     # row-level audit field. Older regional archives may not expose that
     # historical metadata for completed months, so do not reject them here.
-    if region_code in {"sverdlovsk", "vologda"} and not hourly["load_history_last_month"].astype(str).eq(expected_history_month).all():
+    if region_code in {"sverdlovsk", "vologda", "kemerovo"} and not hourly["load_history_last_month"].astype(str).eq(expected_history_month).all():
         raise ValueError("Снимок нарушает правило M-2 для факта и зависимой истории")
     # Display rounding may create visual ties, but selected hours must always
     # remain the top two *unrounded* model scores inside each eligible segment.

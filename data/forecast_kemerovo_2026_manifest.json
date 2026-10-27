@@ -1,0 +1,98 @@
+{
+  "region": "Кемеровская область — Кузбасс",
+  "region_code": "kemerovo",
+  "release": "interface_release_v14_20261027",
+  "model": "CatBoostRanker QueryRMSE",
+  "features": 22,
+  "params": {
+    "iterations": 120,
+    "depth": 5,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 8,
+    "random_seed": 20260929,
+    "thread_count": 2
+  },
+  "snapshot": "forecast_kemerovo_2026.csv",
+  "snapshot_sha256": "e9815a4679c6895b6162c33a5f33ec52bc8de29c13fef300d6ec42a4ae1e2140",
+  "rows": 2553,
+  "days": 247,
+  "months": [
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "metrics": [
+    {
+      "date": 2025,
+      "days": 64,
+      "hit2": 58,
+      "hit22": 58
+    },
+    {
+      "date": 2026,
+      "days": 183,
+      "hit2": 149,
+      "hit22": 163
+    }
+  ],
+  "source_snapshot_sha256": "b21d3ee81fdd3a8da4e0e51050b0d2215850617d7917b221c10735b0524925c3",
+  "audit": "regions/kemerovo/reports/audit/final_audit_v13_20261027",
+  "history": "own-rowM-2 and model fit throughM-2",
+  "weather_mode": "archived_observation_proxy",
+  "forecast_issue_time_not_established": true,
+  "score_kind": "probability",
+  "probability_transform": {
+    "status": "complete",
+    "signature": "3cb6d35aabaf3cf7cd987bb8870194aea2d9ecffd0d25af835895626acf4be60",
+    "method": "softmax((score-daymean)/max(sampleSD,1e-6)/tau)",
+    "temperature": 0.3156007793613933,
+    "fitted_through": "2024-11-30",
+    "fit_months": [
+      "2024-01",
+      "2024-02",
+      "2024-03",
+      "2024-04",
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10",
+      "2024-11"
+    ],
+    "OOF_days": 227,
+    "first_half_temperature": 0.41464982239674314,
+    "second_half_validation": {
+      "days": 110,
+      "NLL": 0.9387592764354047,
+      "Brier": 0.48308072927289647
+    },
+    "second_half_uniform": {
+      "days": 110,
+      "NLL": 2.3555243750833985,
+      "Brier": 0.9044394998940453
+    },
+    "final_training_metrics": {
+      "days": 227,
+      "NLL": 1.0358839633742871,
+      "Brier": 0.47968917132991495
+    },
+    "new_fits_this_run": 11,
+    "ranks_and_topk_must_remain_exact": true,
+    "interpretation": "estimated probabilities;not a guarantee of calibration",
+    "display": "sum100percent before rounding",
+    "no2025or2026labels_for_temperature": true
+  },
+  "probability_order_and_selected_hours_exact": true,
+  "source_price_not_used": true,
+  "public_summary": "business description only;technical provenance in manifest and project reports"
+}

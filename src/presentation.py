@@ -14,6 +14,9 @@ def forecast_matrix(hourly: pd.DataFrame, score_kind: str) -> pd.DataFrame:
         # The Volgograd model predicts a relative hourly load shape, not an
         # event probability. Keep its signed percentage-point scale visible.
         display["cell"] = display.score.map(lambda value: f"{value:+.1f}%")
+    elif score_kind == "ranking_score":
+        # QueryRMSE ranks hours; its raw scores are neither probabilities nor load percentages.
+        display["cell"] = display.score.map(lambda value: f"{value:.3f}")
     else:
         raise ValueError(f"Unknown score kind: {score_kind}")
     display.loc[display.is_predicted & display.is_actual, "cell"] = (

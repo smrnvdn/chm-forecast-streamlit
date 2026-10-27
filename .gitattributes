@@ -1,0 +1,2 @@
+# Keep the delivered snapshot checksum identical on Windows and Linux.
+data/forecast_kemerovo_2026.csv text eol=lf

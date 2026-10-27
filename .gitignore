@@ -15,6 +15,7 @@ outputs/
 !data/forecast_volgograd_2026.csv
 !data/forecast_perm_2026.csv
 !data/forecast_vologda_2026.csv
+!data/forecast_kemerovo_2026.csv
 *.log
 .discovery-bin/
 

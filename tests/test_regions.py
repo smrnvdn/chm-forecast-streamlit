@@ -19,6 +19,7 @@ class RegionSnapshotTests(unittest.TestCase):
             "volgograd": (31, 46),
             "perm": (56, 58),
             "vologda": (30, 40),
+            "kemerovo": (58, 58),
         }
         expected_months = [
             pd.Timestamp(f"2025-{month:02}-01") for month in (10, 11, 12)
@@ -28,6 +29,7 @@ class RegionSnapshotTests(unittest.TestCase):
             "volgograd": (7, 10),
             "perm": (6, 12),
             "vologda": (9, 14),
+            "kemerovo": (21, 21),
         }
         for code in REGIONS:
             with self.subTest(region=code):
@@ -38,7 +40,7 @@ class RegionSnapshotTests(unittest.TestCase):
                 q4_2025 = hourly.loc[hourly.date.dt.to_period("Q").eq(pd.Period("2025Q4"))]
                 q4_daily = daily.loc[daily.date.dt.to_period("Q").eq(pd.Period("2025Q4"))]
                 self.assertEqual(len(q4_daily), 64)
-                self.assertEqual(len(q4_2025), 776)
+                self.assertEqual(len(q4_2025), 681 if code == "kemerovo" else 776)
                 expected_history = (q4_2025.date.dt.to_period("M") - 2).astype(str)
                 self.assertTrue(q4_2025.load_history_last_month.astype(str).eq(expected_history).all())
                 self.assertEqual(
@@ -48,9 +50,9 @@ class RegionSnapshotTests(unittest.TestCase):
                 current_2026 = hourly.loc[hourly.date.dt.year.eq(2026)]
                 current_2026_daily = daily.loc[daily.date.dt.year.eq(2026)]
                 self.assertEqual(len(current_2026_daily), 183)
-                self.assertEqual(len(current_2026), 2232)
+                self.assertEqual(len(current_2026), 1872 if code == "kemerovo" else 2232)
                 matrix = forecast_matrix(hourly, REGIONS[code].score_kind)
-                self.assertEqual(matrix.shape, (247, 14))
+                self.assertEqual(matrix.shape, (247, 17 if code == "kemerovo" else 14))
                 september = hourly.loc[hourly.date.dt.month.eq(9)]
                 self.assertEqual(september.date.nunique(), 22)
                 self.assertTrue(september.fact_available.all())
@@ -60,7 +62,12 @@ class RegionSnapshotTests(unittest.TestCase):
                     (int(september_daily.hit_at_2.sum()), int(september_daily.hit_segment_2plus2.sum())),
                     expected_september[code],
                 )
-                self.assertEqual(set(september.market_hour), set(range(8, 16)) | set(range(18, 22)))
+                september_hours = (
+                    set(range(5, 9)) | set(range(13, 18))
+                    if code == "kemerovo"
+                    else set(range(8, 16)) | set(range(18, 22))
+                )
+                self.assertEqual(set(september.market_hour), september_hours)
                 self.assertTrue(september.groupby("date").is_predicted.sum().eq(4).all())
                 self.assertEqual(len(forecast_matrix(september, "probability").attrs["actual_cells"]), 22)
                 self.assertEqual(len(matrix.attrs["actual_cells"]), 247)
@@ -156,6 +163,7 @@ class DashboardTests(unittest.TestCase):
             "volgograd": ["22", "7/22 (31.8%)", "10/22 (45.5%)", "10/22 (45.5%)"],
             "perm": ["22", "6/22 (27.3%)", "12/22 (54.5%)", "12/22 (54.5%)"],
             "vologda": ["22", "9/22 (40.9%)", "14/22 (63.6%)", "14/22 (63.6%)"],
+            "kemerovo": ["22", "21/22 (95.5%)", "21/22 (95.5%)", "21/22 (95.5%)"],
         }
         for code in REGIONS:
             with self.subTest(region=code):
