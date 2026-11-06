@@ -1,0 +1,72 @@
+{
+  "model_version": "E-PERM-025",
+  "source_sha256": "871ad08dd68e59c6c3cbab84d5dbcfa462a3e61da6642a41489a5341ccd0ab04",
+  "rsv_used": false,
+  "feature_builder": "E25 v2, training-compatible segment IDs",
+  "month": "2026-10",
+  "region": "perm",
+  "forecast_issued_at": null,
+  "status": "unlabelled_historical_replay",
+  "day_ahead_horizon": true,
+  "as_of_date_meaning": "hypothetical preceding market date, not issuance",
+  "october_outcomes_loaded": false,
+  "days": 22,
+  "hourly_rows": 308,
+  "picks": 44,
+  "history_cutoff_exclusive": "2026-09-01",
+  "score_transform": {
+    "temperature": 0.5568046969582354,
+    "day_standardized": false
+  },
+  "input_audit_sha256": "f97cc8bc4e8c6264602316dd0d4e988032fddc9174ad9c398ac182424669937d",
+  "fit": {
+    "identity": {
+      "columns": [
+        "hour",
+        "month_sin",
+        "month_cos",
+        "weekday",
+        "eligible_count",
+        "segment_count",
+        "segment_id",
+        "segment_position",
+        "segment_length",
+        "segment_fraction",
+        "temperature",
+        "temp_dev_day",
+        "temp_range_day",
+        "temp_delta_prev",
+        "temp_missing",
+        "hist_load_shape_month_hour",
+        "humidity",
+        "wind_speed"
+      ],
+      "params": {
+        "loss_function": "RMSE",
+        "iterations": 120,
+        "depth": 5,
+        "learning_rate": 0.05,
+        "l2_leaf_reg": 8,
+        "random_seed": 20260929,
+        "thread_count": 2
+      },
+      "sha256": "ec218f2e274b0f38e3703b87536526f2a803d637aee6630b399b79af6c221152",
+      "estimator": "CatBoostRegressor",
+      "catboost": "1.2.10"
+    },
+    "model_sha256": "e60ea4734766ef56d19a1faabaebe33b860017bfe164f3d863a6bd58e5315654",
+    "seconds": 1.297000000020489,
+    "train_rows": 25848,
+    "train_days": 2122,
+    "first_train_day": "2018-01-09",
+    "last_train_day": "2026-08-31",
+    "cutoff_exclusive": "2026-09-01"
+  },
+  "hourly_sha256": "9b11ec5b831858115823cfc196fadb22d1381ad15f2b6cb95984fdf5be7a0f1d",
+  "snapshot": "forecast_perm_2026.csv",
+  "snapshot_sha256": "59e58f6618e175a559f964c496c0710f838714fbef988d3c9a5abb0903edcc5b",
+  "archived_prefix_preserved_byte_exact": true,
+  "archive_rows": 3008,
+  "source_reports": "RP5",
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+}

@@ -13,7 +13,7 @@ class KemerovoReleaseTests(unittest.TestCase):
             score=day.sort_values(['score','market_hour'],ascending=[False,True]).market_hour.tolist()
             probability=day.sort_values(['probability','market_hour'],ascending=[False,True]).market_hour.tolist()
             self.assertEqual(score,probability)
-        daily=daily_summary(frame);latest=daily[daily.date.dt.year.eq(2026)]
+        daily=daily_summary(frame);latest=daily[daily.date.dt.year.eq(2026)&daily.date.lt('2026-10-01')]
         self.assertEqual((len(latest),int(latest.hit_at_2.sum()),int(latest.hit_segment_2plus2.sum())),(183,149,163))
         self.assertTrue(frame.load_history_last_month.eq((frame.date.dt.to_period('M')-2).astype(str)).all())
 

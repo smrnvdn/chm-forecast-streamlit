@@ -1,0 +1,86 @@
+{
+  "model_version": "KEMEROVO-QueryRMSE22-120-M-2",
+  "source_sha256": "edd91b03ad3257dc3fbfae63fcf4c8c3bf1399dd9018a9d4027b6822957d5891",
+  "rsv_used": false,
+  "history_audit": [
+    {
+      "origin": "2026-10",
+      "cutoff_exclusive": "2026-09-01",
+      "maximum_fact_date": "2026-08-31",
+      "source_days": 2122,
+      "rows": 220
+    }
+  ],
+  "month": "2026-10",
+  "region": "kemerovo",
+  "forecast_issued_at": null,
+  "status": "unlabelled_historical_replay",
+  "day_ahead_horizon": true,
+  "as_of_date_meaning": "hypothetical preceding market date, not issuance",
+  "october_outcomes_loaded": false,
+  "days": 22,
+  "hourly_rows": 220,
+  "picks": 88,
+  "history_cutoff_exclusive": "2026-09-01",
+  "score_transform": {
+    "temperature": 0.3156007793613933,
+    "day_standardized": true
+  },
+  "input_audit_sha256": "f97cc8bc4e8c6264602316dd0d4e988032fddc9174ad9c398ac182424669937d",
+  "fit": {
+    "identity": {
+      "columns": [
+        "hour",
+        "month_sin",
+        "month_cos",
+        "weekday",
+        "eligible_count",
+        "segment_count",
+        "segment_id",
+        "segment_position",
+        "segment_length",
+        "segment_fraction",
+        "temperature",
+        "temp_dev_day",
+        "temp_range_day",
+        "temp_delta_prev",
+        "temp_missing",
+        "hist_load_shape_month_hour",
+        "humidity",
+        "wind_speed",
+        "hist_shape_month_weekday_hour",
+        "hist_shape_weekday_hour",
+        "hist_shape_month_weekday_support",
+        "hist_shape_month_weekday_delta"
+      ],
+      "params": {
+        "iterations": 120,
+        "depth": 5,
+        "learning_rate": 0.05,
+        "l2_leaf_reg": 8,
+        "random_seed": 20260929,
+        "thread_count": 2,
+        "loss_function": "QueryRMSE",
+        "use_best_model": false,
+        "nan_mode": "Min"
+      },
+      "sha256": "b55eede5f7d07a50bda4054a54edb11f5cf2ab28940a5af1d49999fa45856def",
+      "estimator": "CatBoostRanker",
+      "catboost": "1.2.10"
+    },
+    "model_sha256": "c8ae8a8a7cf08fd20eb7dcb24e01af8f6ecadd06059d4dd3bc5ee2949f54fc8f",
+    "seconds": 0.859000000054948,
+    "train_rows": 21783,
+    "train_days": 2103,
+    "first_train_day": "2018-01-09",
+    "last_train_day": "2026-08-31",
+    "cutoff_exclusive": "2026-09-01"
+  },
+  "hourly_sha256": "b9dc29aaefab779f463e9c8f8e87cd58841ce59c97b8adbbbef4b3bccfc2f88f",
+  "snapshot": "forecast_kemerovo_2026.csv",
+  "snapshot_sha256": "aa79e4318f1aa4c1ab52501aa70dfb6e58daa173e61d0f5fe04c0394bd857a72",
+  "archived_prefix_preserved_byte_exact": true,
+  "archive_rows": 2553,
+  "source_reports": "RP5",
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+}

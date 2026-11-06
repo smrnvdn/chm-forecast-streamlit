@@ -23,7 +23,7 @@ class RegionSnapshotTests(unittest.TestCase):
         }
         expected_months = [
             pd.Timestamp(f"2025-{month:02}-01") for month in (10, 11, 12)
-        ] + [pd.Timestamp(f"2026-{month:02}-01") for month in range(1, 10)]
+        ] + [pd.Timestamp(f"2026-{month:02}-01") for month in range(1, 11)]
         expected_september = {
             "sverdlovsk": (14, 17),
             "volgograd": (7, 10),
@@ -49,10 +49,10 @@ class RegionSnapshotTests(unittest.TestCase):
                 )
                 current_2026 = hourly.loc[hourly.date.dt.year.eq(2026)]
                 current_2026_daily = daily.loc[daily.date.dt.year.eq(2026)]
-                self.assertEqual(len(current_2026_daily), 183)
-                self.assertEqual(len(current_2026), 1872 if code == "kemerovo" else 2232)
+                self.assertEqual(len(current_2026_daily), 205)
+                self.assertEqual(len(current_2026), 2092 if code == "kemerovo" else 2540)
                 matrix = forecast_matrix(hourly, REGIONS[code].score_kind)
-                self.assertEqual(matrix.shape, (247, 17 if code == "kemerovo" else 14))
+                self.assertEqual(matrix.shape, (269, 17 if code == "kemerovo" else 14))
                 september = hourly.loc[hourly.date.dt.month.eq(9)]
                 self.assertEqual(september.date.nunique(), 22)
                 self.assertTrue(september.fact_available.all())
@@ -71,6 +71,14 @@ class RegionSnapshotTests(unittest.TestCase):
                 self.assertTrue(september.groupby("date").is_predicted.sum().eq(4).all())
                 self.assertEqual(len(forecast_matrix(september, "probability").attrs["actual_cells"]), 22)
                 self.assertEqual(len(matrix.attrs["actual_cells"]), 247)
+                october = hourly.loc[hourly.month.eq("2026-10")]
+                self.assertEqual(october.date.nunique(), 22)
+                self.assertFalse(october.fact_available.any())
+                self.assertTrue(october[["hit_at_2", "hit_segment_2plus2"]].isna().all().all())
+                self.assertTrue(october.load_history_last_month.eq("2026-08").all())
+                october_hours = (set(range(5, 9)) | set(range(12, 18))) if code == "kemerovo" else set(range(8, 22))
+                self.assertTrue(october.groupby("date").market_hour.agg(set).map(lambda hours: hours == october_hours).all())
+                self.assertTrue(october.groupby("date").is_predicted.sum().eq(4 if code == "kemerovo" else 2).all())
 
     def test_volgograd_frozen_metrics_and_market_hour_mapping(self) -> None:
         hourly = validate_snapshot(pd.read_csv(snapshot_path("volgograd"), parse_dates=["date"]), "volgograd")
@@ -99,7 +107,7 @@ class RegionSnapshotTests(unittest.TestCase):
         daily = daily_summary(hourly)
         daily = daily.loc[daily.date.dt.year.eq(2026)]
         self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (105, 125))
-        self.assertEqual(sorted(hourly.loc[hourly.date.dt.year.eq(2026), "month"].unique()), [f"2026-{m:02}" for m in range(1, 10)])
+        self.assertEqual(sorted(hourly.loc[hourly.date.dt.year.eq(2026), "month"].unique()), [f"2026-{m:02}" for m in range(1, 11)])
         self.assertTrue((hourly.load_history_last_month == (hourly.date.dt.to_period("M") - 2).astype(str)).all())
         for (_, _), part in hourly.groupby(["date", "segment"]):
             raw = set(part.sort_values(["score", "market_hour"], ascending=[False, True]).market_hour.head(2))
@@ -140,7 +148,7 @@ class RegionSnapshotTests(unittest.TestCase):
 
     def test_unlabeled_future_style_day_has_no_false_accuracy(self) -> None:
         hourly = pd.read_csv(snapshot_path("volgograd"), parse_dates=["date"])
-        one_day = hourly.loc[hourly.date.eq(hourly.date.max())].copy()
+        one_day = hourly.loc[hourly.date.eq(pd.Timestamp("2026-09-30"))].copy()
         one_day["date"] = pd.Timestamp("2026-10-01")
         one_day["is_actual"] = 0
         one_day["hit_at_2"] = float("nan")
@@ -176,8 +184,11 @@ class DashboardTests(unittest.TestCase):
                 self.assertIn(REGIONS[code].genitive, app.title[0].value)
                 self.assertEqual(app.query_params["region"], [code])
                 self.assertEqual(app.query_params["other"], ["preserved"])
+                self.assertEqual([m.value for m in app.metric], ["22", "—", "—", "—"])
+                self.assertEqual(app.multiselect(key=f"forecast_months_{code}").value, [pd.Timestamp("2026-10-01")])
+                self.assertTrue(any("неизвестными фактическими" in notice.value for notice in app.info))
+                app.multiselect(key=f"forecast_months_{code}").set_value([pd.Timestamp("2026-09-01")]).run()
                 self.assertEqual([m.value for m in app.metric], september_metrics[code])
-                self.assertEqual(app.multiselect(key=f"forecast_months_{code}").value, [pd.Timestamp("2026-09-01")])
                 q4_2025_labels = {month_label(pd.Timestamp(f"2025-{month:02}-01")) for month in (10, 11, 12)}
                 self.assertTrue(q4_2025_labels.issubset(set(app.multiselect(key=f"forecast_months_{code}").options)))
                 self.assertFalse(any("расчёт выполнен после окончания месяца с фактической погодой" in notice.value for notice in app.info))
@@ -194,7 +205,7 @@ class DashboardTests(unittest.TestCase):
         app.run()
         self.assertFalse(app.exception)
         self.assertEqual(app.selectbox(key="forecast_region").value, "perm")
-        self.assertEqual([m.value for m in app.metric[:3]], ["22", "6/22 (27.3%)", "12/22 (54.5%)"])
+        self.assertEqual([m.value for m in app.metric[:3]], ["22", "—", "—"])
 
     def test_switching_regions_preserves_each_snapshot(self) -> None:
         app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "streamlit_app.py"), default_timeout=20).run()
@@ -233,6 +244,9 @@ class DashboardTests(unittest.TestCase):
         self.assertFalse(app.exception)
         self.assertEqual([m.value for m in app.metric[:3]], ["183", "104/183 (56.8%)", "117/183 (63.9%)"])
         self.assertFalse(any("161 из 183" in caption.value for caption in app.caption))
+        app.multiselect(key="forecast_months_sverdlovsk").set_value([pd.Timestamp(f"2026-{m:02}-01") for m in range(1, 11)]).run()
+        self.assertEqual([m.value for m in app.metric[:3]], ["205", "104/183 (56.8%)", "117/183 (63.9%)"])
+        self.assertTrue(any("183 из 205" in caption.value for caption in app.caption))
 
     def test_amur_opens_october_and_can_compare_september(self) -> None:
         app = self.make_app()
@@ -282,6 +296,7 @@ class DashboardTests(unittest.TestCase):
         app = self.make_app()
         app.query_params["region"] = "vologda"
         app.run()
+        app.multiselect(key="forecast_months_vologda").set_value([pd.Timestamp("2026-09-01")]).run()
         self.assertFalse(app.exception)
         self.assertEqual([m.value for m in app.metric], ["22", "9/22 (40.9%)", "14/22 (63.6%)", "14/22 (63.6%)"])
         self.assertEqual(app.dataframe[0].value.shape, (22, 14))
