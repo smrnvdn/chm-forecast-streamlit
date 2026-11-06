@@ -261,7 +261,8 @@ class DashboardTests(unittest.TestCase):
         self.assertTrue(any("неизвестными фактическими часами" in notice.value for notice in app.info))
         october_matrix = app.dataframe[0].value
         self.assertEqual(len(october_matrix), 22)
-        self.assertFalse(october_matrix.apply(lambda column: column.str.contains("✓|%", regex=True)).any().any())
+        self.assertFalse(october_matrix.apply(lambda column: column.str.contains("✓")).any().any())
+        self.assertTrue(october_matrix.apply(lambda column: column.str.extract(r"(\d+)%")[0].astype(float)).sum(axis=1).eq(100).all())
 
         months.set_value([pd.Timestamp("2026-09-01")]).run()
         self.assertFalse(app.exception)
@@ -289,7 +290,12 @@ class DashboardTests(unittest.TestCase):
         oct_hours = hourly.loc[hourly.month.eq("2026-10")]
         self.assertEqual(set(oct_hours.market_hour), {3, 4, 5, 6, 7, 12, 13, 14, 15, 16})
         self.assertTrue(oct_hours.load_history_last_month.eq("2026-08").all())
-        self.assertEqual(len(forecast_matrix(oct_hours, "ranking_score").attrs["predicted_cells"]), 88)
+        self.assertEqual(len(forecast_matrix(oct_hours, "probability").attrs["predicted_cells"]), 88)
+        self.assertTrue(hourly.groupby("date").display_percent.sum().eq(100).all())
+        for _, day in hourly.groupby("date"):
+            raw = day.sort_values(["score", "market_hour"], ascending=[False, True]).market_hour.tolist()
+            scaled = day.sort_values(["probability", "market_hour"], ascending=[False, True]).market_hour.tolist()
+            self.assertEqual(raw, scaled)
         self.assertTrue(oct_hours.forecast_issued_at.isna().all())
 
     def test_vologda_months_metrics_and_september_matrix(self) -> None:

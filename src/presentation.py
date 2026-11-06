@@ -9,7 +9,10 @@ def forecast_matrix(hourly: pd.DataFrame, score_kind: str) -> pd.DataFrame:
     """Build a date × market-hour matrix and retain cell status for styling."""
     display = hourly.copy()
     if score_kind == "probability":
-        display["cell"] = display.probability.map(lambda value: f"{value:.0%}")
+        if "display_percent" in display:
+            display["cell"] = display.display_percent.map(lambda value: f"{value:.0f}%")
+        else:
+            display["cell"] = display.probability.map(lambda value: f"{value:.0%}")
     elif score_kind == "load_shape_score":
         # The Volgograd model predicts a relative hourly load shape, not an
         # event probability. Keep its signed percentage-point scale visible.

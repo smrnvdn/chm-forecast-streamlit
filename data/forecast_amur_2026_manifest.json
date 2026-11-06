@@ -3,7 +3,7 @@
   "region_code": "amur",
   "model": "CatBoostRanker QueryRMSE by date and interval",
   "version": "AMUR-CatBoost-QueryRMSE-M-2",
-  "score_kind": "ranking_score",
+  "score_kind": "probability",
   "features": [
     "hour",
     "month_sin",
@@ -40,7 +40,7 @@
     "thread_count": 2
   },
   "snapshot": "forecast_amur_2026.csv",
-  "snapshot_sha256": "9c9795a2c6f3649c95896c334f2fa8d866527c11d922941adc8bf1da8a828e97",
+  "snapshot_sha256": "b6a6b91a1edbff7a06f7cb9047fbfabb4a23a775863d5796621a1fd97f4b6afb",
   "rows": 3737,
   "days": 452,
   "months": [
@@ -70,12 +70,12 @@
   "historic_labeled_days": 430,
   "october_forecast_days": 22,
   "common_cold_start_days": 37,
-  "generated_at_utc": "2026-11-06T13:34:39.407854+00:00",
+  "generated_at_utc": "2026-11-06T13:42:05.660443+00:00",
   "forecast_issued_at": null,
   "input_status": "Observed RP5 as forecast proxy. Archived ATS files checked for publication on an earlier date.",
   "historical_study_sha256": "74b9ad252fa65428fee9df39e5d90093d0b5e726ec9aec1930460f33973db729",
   "september_audit_sha256": "082807848aa1364408972d507a0aa1187f4ba501111530c8aa30c4586f4cc84e",
-  "october_model_sha256": "227d1ee5b7691448418123026eaa2a6bed134067395d5ee2cf66a0ebfc37c38c",
+  "october_model_sha256": "085f9c47eed7fe6570930fe17ed561477bcd19727fa63a72668a7dd565e30a4f",
   "october_scores_sha256": "213b455f1216d236951e8d3da43209cb994c23c69ea0950ebc25a58d1f36abb0",
   "october": {
     "horizon": "next day",
@@ -289,6 +289,191 @@
     ],
     "native_temperature_values": 248
   },
+  "probability_transform": {
+    "method": "Day-standardized softmax with positive temperature; official OOF labels through M-2 only",
+    "cold_or_insufficient_history_temperature": 1.0,
+    "min_oof_days": 30,
+    "display": "Largest remainder rounds each row to exactly 100 percent",
+    "rank_preserved": true,
+    "months": [
+      {
+        "month": "2025-01",
+        "cutoff_exclusive": "2024-12-01",
+        "prior_oof_days": 0,
+        "fitted": false,
+        "temperature": 1.0,
+        "latest_label_file": null
+      },
+      {
+        "month": "2025-02",
+        "cutoff_exclusive": "2025-01-01",
+        "prior_oof_days": 0,
+        "fitted": false,
+        "temperature": 1.0,
+        "latest_label_file": null
+      },
+      {
+        "month": "2025-03",
+        "cutoff_exclusive": "2025-02-01",
+        "prior_oof_days": 0,
+        "fitted": false,
+        "temperature": 1.0,
+        "latest_label_file": null
+      },
+      {
+        "month": "2025-04",
+        "cutoff_exclusive": "2025-03-01",
+        "prior_oof_days": 0,
+        "fitted": false,
+        "temperature": 1.0,
+        "latest_label_file": null
+      },
+      {
+        "month": "2025-05",
+        "cutoff_exclusive": "2025-04-01",
+        "prior_oof_days": 21,
+        "fitted": false,
+        "temperature": 1.0,
+        "latest_label_file": "2025-04-08T15:42:33+03:00"
+      },
+      {
+        "month": "2025-06",
+        "cutoff_exclusive": "2025-05-01",
+        "prior_oof_days": 43,
+        "fitted": true,
+        "temperature": 1.353711736306515,
+        "latest_label_file": "2025-05-08T14:23:37+03:00"
+      },
+      {
+        "month": "2025-07",
+        "cutoff_exclusive": "2025-06-01",
+        "prior_oof_days": 61,
+        "fitted": true,
+        "temperature": 1.8772913528680686,
+        "latest_label_file": "2025-06-09T10:24:46+03:00"
+      },
+      {
+        "month": "2025-08",
+        "cutoff_exclusive": "2025-07-01",
+        "prior_oof_days": 80,
+        "fitted": true,
+        "temperature": 3.2990372396756484,
+        "latest_label_file": "2025-07-08T12:34:28+03:00"
+      },
+      {
+        "month": "2025-09",
+        "cutoff_exclusive": "2025-08-01",
+        "prior_oof_days": 103,
+        "fitted": true,
+        "temperature": 2.6340397227166155,
+        "latest_label_file": "2025-08-08T14:51:04+03:00"
+      },
+      {
+        "month": "2025-10",
+        "cutoff_exclusive": "2025-09-01",
+        "prior_oof_days": 124,
+        "fitted": true,
+        "temperature": 1.847088861867297,
+        "latest_label_file": "2025-09-08T16:14:12+03:00"
+      },
+      {
+        "month": "2025-11",
+        "cutoff_exclusive": "2025-10-01",
+        "prior_oof_days": 146,
+        "fitted": true,
+        "temperature": 1.8173730158193766,
+        "latest_label_file": "2025-10-09T10:09:42+03:00"
+      },
+      {
+        "month": "2025-12",
+        "cutoff_exclusive": "2025-11-01",
+        "prior_oof_days": 169,
+        "fitted": true,
+        "temperature": 1.6740465281800014,
+        "latest_label_file": "2025-11-08T12:23:38+03:00"
+      },
+      {
+        "month": "2026-01",
+        "cutoff_exclusive": "2025-12-01",
+        "prior_oof_days": 188,
+        "fitted": true,
+        "temperature": 1.8857172418429542,
+        "latest_label_file": "2025-12-09T12:43:16+03:00"
+      },
+      {
+        "month": "2026-02",
+        "cutoff_exclusive": "2026-01-01",
+        "prior_oof_days": 210,
+        "fitted": true,
+        "temperature": 2.116861904462896,
+        "latest_label_file": "2026-01-10T17:48:15+03:00"
+      },
+      {
+        "month": "2026-03",
+        "cutoff_exclusive": "2026-02-01",
+        "prior_oof_days": 225,
+        "fitted": true,
+        "temperature": 2.129351190817047,
+        "latest_label_file": "2026-02-09T10:14:04+03:00"
+      },
+      {
+        "month": "2026-04",
+        "cutoff_exclusive": "2026-03-01",
+        "prior_oof_days": 244,
+        "fitted": true,
+        "temperature": 2.0385439018694202,
+        "latest_label_file": "2026-03-08T10:36:49+03:00"
+      },
+      {
+        "month": "2026-05",
+        "cutoff_exclusive": "2026-04-01",
+        "prior_oof_days": 265,
+        "fitted": true,
+        "temperature": 1.8779565031508065,
+        "latest_label_file": "2026-04-08T13:22:13+03:00"
+      },
+      {
+        "month": "2026-06",
+        "cutoff_exclusive": "2026-05-01",
+        "prior_oof_days": 287,
+        "fitted": true,
+        "temperature": 1.611639923183924,
+        "latest_label_file": "2026-05-08T12:06:32+03:00"
+      },
+      {
+        "month": "2026-07",
+        "cutoff_exclusive": "2026-06-01",
+        "prior_oof_days": 306,
+        "fitted": true,
+        "temperature": 1.5071316636605736,
+        "latest_label_file": "2026-06-09T13:24:09+03:00"
+      },
+      {
+        "month": "2026-08",
+        "cutoff_exclusive": "2026-07-01",
+        "prior_oof_days": 327,
+        "fitted": true,
+        "temperature": 1.4885477034751997,
+        "latest_label_file": "2026-07-08T12:49:50+03:00"
+      },
+      {
+        "month": "2026-09",
+        "cutoff_exclusive": "2026-08-01",
+        "prior_oof_days": 350,
+        "fitted": true,
+        "temperature": 1.4862701669144442,
+        "latest_label_file": "2026-08-08T10:39:41+03:00"
+      },
+      {
+        "month": "2026-10",
+        "cutoff_exclusive": "2026-09-01",
+        "prior_oof_days": 371,
+        "fitted": true,
+        "temperature": 1.466020756987225,
+        "latest_label_file": "2026-09-09T10:18:50+03:00"
+      }
+    ]
+  },
   "evaluation": [
     {
       "recipe": "queryrmse_interval",
@@ -315,6 +500,6 @@
     "ats_rsv_hourly.csv": "99f3cbff9f3918b7a3b0493755212fdd2b6d09d806ac1a667bba23643e27e267",
     "daily_reconciliation.csv": "e3354dc0524d6bec80b31ae817a3603e35467e6b782d79d0002976373fc63ac6",
     "dataset_archive_v1.csv": "4fb8f63a1d79d25f936708e76511b34e6cbb87daff3e75cdfd6d13ce41051760",
-    "export_amur_streamlit.py": "60421b5d0b9bd77c6ce79c821bdb2110ebba618b7a314a7bb23dcd6595ac47fb"
+    "export_amur_streamlit.py": "d1eda0fe5f0ef58135bbae7958cc1483e08c2ac9e85958247262b04de1b5fa96"
   }
 }
