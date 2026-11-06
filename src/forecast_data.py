@@ -104,6 +104,19 @@ REGIONS = {
 Показываются рабочие замерные дни. Прочерк означает час вне утверждённых интервалов. Синим выделен прогноз, зелёным — фактический максимум после публикации результатов. Время указано по Москве: «08:00» соответствует интервалу 07:00–08:00.""",
         matrix_caption="В ячейках — оценочная вероятность часа максимума; за каждый день сумма до округления равна 100%. Синим отмечен прогноз; зелёным — фактический час максимума. Галочка означает попадание прогноза в факт. Часы указаны по рыночной нумерации МСК.",
     ),
+    "amur": RegionConfig(
+        name="Амурская область",
+        genitive="Амурской области",
+        snapshot_file="forecast_amur_2026.csv",
+        model_label="CatBoost",
+        score_kind="ranking_score",
+        about_markdown="""**CatBoost** ранжирует возможные часы максимального потребления Амурской области. Модель учитывает календарь, погоду, привычный профиль нагрузки, а также плановую нагрузку и цену рынка на сутки вперёд.
+
+Модель выдаёт одну оценку на каждый замерный час. При двух попытках выбираются два часа за день. По правилу 2+2 выбираются по два часа в каждом замерном интервале.
+
+Синим отмечены выбранные часы. Зелёным показан опубликованный фактический максимум, галочкой отмечено попадание по 2+2. Время указано по Москве. В октябрьском расчёте архивные наблюдения использованы вместо прогноза погоды.""",
+        matrix_caption="Чем выше оценка, тем выше место часа в рейтинге. Синим выделены выбранные часы по 2+2, зелёным — опубликованный фактический максимум.",
+    ),
 }
 
 
@@ -132,6 +145,8 @@ def validate_snapshot(hourly: pd.DataFrame, region_code: str) -> pd.DataFrame:
     required = {"date", "market_hour", "segment", "segment_count", "is_predicted",
                 "is_actual", "hit_at_2", "hit_segment_2plus2", "load_history_last_month", "model_version"}
     required.add("probability" if config.score_kind == "probability" else "score")
+    if region_code == "amur":
+        required.add("forecast_basis")
     missing = required.difference(hourly.columns)
     if missing:
         raise ValueError(f"Нет обязательных полей прогноза: {', '.join(sorted(missing))}")
@@ -174,6 +189,14 @@ def validate_snapshot(hourly: pd.DataFrame, region_code: str) -> pd.DataFrame:
     # historical metadata for completed months, so do not reject them here.
     if region_code in {"sverdlovsk", "vologda", "kemerovo"} and not hourly["load_history_last_month"].astype(str).eq(expected_history_month).all():
         raise ValueError("Снимок нарушает правило M-2 для факта и зависимой истории")
+    if region_code == "amur":
+        cold_start = hourly.date.lt("2025-03-01")
+        history = hourly.load_history_last_month
+        if (not history.loc[cold_start].isna().all()
+            or not history.loc[~cold_start].eq(expected_history_month.loc[~cold_start]).all()
+            or not hourly.forecast_basis.loc[cold_start].eq("common_cold_start").all()
+            or not hourly.forecast_basis.loc[~cold_start].eq("interval_ranker").all()):
+            raise ValueError("Снимок Амурской области нарушает правило M-2 или холодного старта")
     # Display rounding may create visual ties, but selected hours must always
     # remain the top two *unrounded* model scores inside each eligible segment.
     for _, segment in hourly.groupby(["date", "segment"]):

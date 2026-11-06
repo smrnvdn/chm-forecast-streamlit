@@ -30,8 +30,9 @@ def forecast_matrix(hourly: pd.DataFrame, score_kind: str) -> pd.DataFrame:
     matrix = matrix.reindex(columns=range(first_hour, last_hour + 1), fill_value="—").fillna("—")
     matrix.columns = [f"{hour:02d}:00" for hour in matrix.columns]
     weekdays = ("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
+    date_format = "%d.%m.%Y" if matrix.index.strftime("%d.%m").has_duplicates else "%d.%m"
     labels = {
-        timestamp: f"{timestamp:%d.%m} · {weekdays[timestamp.weekday()]}"
+        timestamp: f"{timestamp.strftime(date_format)} · {weekdays[timestamp.weekday()]}"
         for timestamp in pd.to_datetime(matrix.index)
     }
     matrix.index = matrix.index.map(labels)

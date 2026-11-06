@@ -31,7 +31,7 @@ class RegionSnapshotTests(unittest.TestCase):
             "vologda": (9, 14),
             "kemerovo": (21, 21),
         }
-        for code in REGIONS:
+        for code in expected_q4_2025:
             with self.subTest(region=code):
                 hourly = validate_snapshot(pd.read_csv(snapshot_path(code), parse_dates=["date"]), code)
                 hourly["month_start"] = pd.to_datetime(hourly["month"] + "-01")
@@ -165,7 +165,7 @@ class DashboardTests(unittest.TestCase):
             "vologda": ["22", "9/22 (40.9%)", "14/22 (63.6%)", "14/22 (63.6%)"],
             "kemerovo": ["22", "21/22 (95.5%)", "21/22 (95.5%)", "21/22 (95.5%)"],
         }
-        for code in REGIONS:
+        for code in september_metrics:
             with self.subTest(region=code):
                 app = self.make_app()
                 app.query_params["region"] = code
@@ -233,6 +233,50 @@ class DashboardTests(unittest.TestCase):
         self.assertFalse(app.exception)
         self.assertEqual([m.value for m in app.metric[:3]], ["183", "104/183 (56.8%)", "117/183 (63.9%)"])
         self.assertFalse(any("161 из 183" in caption.value for caption in app.caption))
+
+    def test_amur_opens_october_and_can_compare_september(self) -> None:
+        app = self.make_app()
+        app.query_params["region"] = "amur"
+        app.run()
+        self.assertFalse(app.exception)
+        self.assertIn("Амурской области", app.title[0].value)
+        months = app.multiselect(key="forecast_months_amur")
+        self.assertEqual(months.value, [pd.Timestamp("2026-10-01")])
+        self.assertEqual(len(months.options), 22)
+        self.assertEqual([m.value for m in app.metric], ["22", "—", "—", "—"])
+        self.assertTrue(any("неизвестными фактическими часами" in notice.value for notice in app.info))
+        october_matrix = app.dataframe[0].value
+        self.assertEqual(len(october_matrix), 22)
+        self.assertFalse(october_matrix.apply(lambda column: column.str.contains("✓|%", regex=True)).any().any())
+
+        months.set_value([pd.Timestamp("2026-09-01")]).run()
+        self.assertFalse(app.exception)
+        self.assertEqual([m.value for m in app.metric], ["22", "18/22 (81.8%)", "21/22 (95.5%)", "21/22 (95.5%)"])
+        self.assertEqual(int(app.dataframe[0].value.apply(lambda column: column.str.startswith("✓ ")).sum().sum()), 21)
+
+        app.multiselect(key="forecast_months_amur").set_value(
+            [pd.Timestamp("2025-01-01"), pd.Timestamp("2026-01-01"), pd.Timestamp("2026-10-01")]
+        ).run()
+        self.assertFalse(app.exception)
+        self.assertTrue(any("исходный порядок часов" in caption.value for caption in app.caption))
+        self.assertTrue(any("32 из 54" in caption.value for caption in app.caption))
+        self.assertTrue(any("2025" in label for label in app.dataframe[0].value.index))
+
+    def test_amur_snapshot_matches_approved_days_and_cutoffs(self) -> None:
+        hourly = validate_snapshot(pd.read_csv(snapshot_path("amur"), parse_dates=["date"], float_precision="round_trip"), "amur")
+        daily = daily_summary(hourly)
+        self.assertEqual(len(daily), 452)
+        self.assertEqual(len(hourly), 3737)
+        self.assertEqual(int(daily.fact_available.sum()), 430)
+        expected = {2025: (247, 103, 180), 2026: (183, 105, 137)}
+        for year, metrics in expected.items():
+            days = daily.loc[daily.date.dt.year.eq(year) & daily.fact_available]
+            self.assertEqual((len(days), int(days.hit_at_2.sum()), int(days.hit_segment_2plus2.sum())), metrics)
+        oct_hours = hourly.loc[hourly.month.eq("2026-10")]
+        self.assertEqual(set(oct_hours.market_hour), {3, 4, 5, 6, 7, 12, 13, 14, 15, 16})
+        self.assertTrue(oct_hours.load_history_last_month.eq("2026-08").all())
+        self.assertEqual(len(forecast_matrix(oct_hours, "ranking_score").attrs["predicted_cells"]), 88)
+        self.assertTrue(oct_hours.forecast_issued_at.isna().all())
 
     def test_vologda_months_metrics_and_september_matrix(self) -> None:
         app = self.make_app()

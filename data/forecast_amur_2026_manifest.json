@@ -1,0 +1,320 @@
+{
+  "region": "Амурская область",
+  "region_code": "amur",
+  "model": "CatBoostRanker QueryRMSE by date and interval",
+  "version": "AMUR-CatBoost-QueryRMSE-M-2",
+  "score_kind": "ranking_score",
+  "features": [
+    "hour",
+    "month_sin",
+    "month_cos",
+    "weekday",
+    "eligible_count",
+    "segment_count",
+    "segment_id",
+    "segment_position",
+    "segment_length",
+    "segment_fraction",
+    "temperature",
+    "temp_dev_day",
+    "temp_range_day",
+    "temp_delta_prev",
+    "temp_missing",
+    "hist_load_shape_month_hour",
+    "humidity",
+    "wind_speed",
+    "plan_volume",
+    "plan_relative_day",
+    "plan_relative_segment",
+    "plan_rank_segment",
+    "price_relative_day",
+    "price_relative_segment",
+    "price_rank_segment"
+  ],
+  "parameters": {
+    "iterations": 120,
+    "depth": 5,
+    "learning_rate": 0.05,
+    "l2_leaf_reg": 8,
+    "random_seed": 20260929,
+    "thread_count": 2
+  },
+  "snapshot": "forecast_amur_2026.csv",
+  "snapshot_sha256": "9c9795a2c6f3649c95896c334f2fa8d866527c11d922941adc8bf1da8a828e97",
+  "rows": 3737,
+  "days": 452,
+  "months": [
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09",
+    "2026-10"
+  ],
+  "historic_labeled_days": 430,
+  "october_forecast_days": 22,
+  "common_cold_start_days": 37,
+  "generated_at_utc": "2026-11-06T13:34:39.407854+00:00",
+  "forecast_issued_at": null,
+  "input_status": "Observed RP5 as forecast proxy. Archived ATS files checked for publication on an earlier date.",
+  "historical_study_sha256": "74b9ad252fa65428fee9df39e5d90093d0b5e726ec9aec1930460f33973db729",
+  "september_audit_sha256": "082807848aa1364408972d507a0aa1187f4ba501111530c8aa30c4586f4cc84e",
+  "october_model_sha256": "227d1ee5b7691448418123026eaa2a6bed134067395d5ee2cf66a0ebfc37c38c",
+  "october_scores_sha256": "213b455f1216d236951e8d3da43209cb994c23c69ea0950ebc25a58d1f36abb0",
+  "october": {
+    "horizon": "next day",
+    "cutoff_exclusive": "2026-09-01",
+    "max_fact_date": "2026-08-31",
+    "latest_training_release": "2026-09-09T10:19:45+03:00",
+    "training_days": 408,
+    "training_rows": 3319,
+    "issue_clock_open": true,
+    "exact_inputs_when_days_isolated": true,
+    "october_outcomes_used": false,
+    "source_editions": [
+      {
+        "day": "2026-10-01",
+        "file": "20261001_dv_trade_region_spub.xls",
+        "sha256": "ac77a04b6a5453724f9cf5cf60e3d4439521ace165c4defc3d27f76aaa7a8f01",
+        "url": "https://www.atsenergo.ru/nreport?fid=5CB029406AB709ABE0633200640A3A0D&region=sib",
+        "published_at": "30.09.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:16+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-02",
+        "file": "20261002_dv_trade_region_spub.xls",
+        "sha256": "dcbd4b0f2f82ae98f220c304959736c7acdfae2db31b3b41e8b21e44d020b8f3",
+        "url": "https://www.atsenergo.ru/nreport?fid=5CC4471B04297EE4E0633200640A586F&region=sib",
+        "published_at": "01.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:16+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-05",
+        "file": "20261005_dv_trade_region_spub.xls",
+        "sha256": "982269ce9a9389904f9966e231438e57d4571c4bb38f8c90b3be91197514b6bc",
+        "url": "https://www.atsenergo.ru/nreport?fid=5D00A0CA05A7637AE0633200640A4AE0&region=sib",
+        "published_at": "04.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:42+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-06",
+        "file": "20261006_dv_trade_region_spub.xls",
+        "sha256": "6b50518713eba3c5114c2fab0d398a30c35a1ae1f48ea48b33d69708a5a5ab6f",
+        "url": "https://www.atsenergo.ru/nreport?fid=5D14BE8307FB5A56E0633200640A47D6&region=sib",
+        "published_at": "05.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:42+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-07",
+        "file": "20261007_dv_trade_region_spub.xls",
+        "sha256": "ac1259408efb408b029dd442abf6b088fec9b034d7a0bdddfcc31c63da3de00b",
+        "url": "https://www.atsenergo.ru/nreport?fid=5D28DCC75D4A5129E0633200640AB7C6&region=sib",
+        "published_at": "06.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:42+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-08",
+        "file": "20261008_dv_trade_region_spub.xls",
+        "sha256": "c92d8a3489d7ba34007afa7bb2ed856a940bc1e981e98a44a23d73753a2c2be6",
+        "url": "https://www.atsenergo.ru/nreport?fid=5D3CFA333CB0488CE0633200640AB60E&region=sib",
+        "published_at": "07.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:42+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-09",
+        "file": "20261009_dv_trade_region_spub.xls",
+        "sha256": "884d9cfc46a92e1ea6a39678276dbf8d04545bfdfa69982f247e7fe24c8e6673",
+        "url": "https://www.atsenergo.ru/nreport?fid=5D511B8F4785421DE0633200640A30CB&region=sib",
+        "published_at": "08.10.2026 11:36",
+        "retrieved_at_utc": "2026-11-05T15:46:42+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-12",
+        "file": "20261012_dv_trade_region_spub.xls",
+        "sha256": "4b8915f11b0209b7c884faef8674b92c9415deef22c8bac315567d78fb6fb4ba",
+        "url": "https://www.atsenergo.ru/nreport?fid=5D8D7937FE4F2B3DE0633200640A8A42&region=sib",
+        "published_at": "11.10.2026 11:37",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-13",
+        "file": "20261013_dv_trade_region_spub.xls",
+        "sha256": "6ba306e189127d2acb558bd34b9c4ec46f5153d0a9aa618318fb0e8f97363ddf",
+        "url": "https://www.atsenergo.ru/nreport?fid=5DA18F5A2AB5209EE0633200640A8258&region=sib",
+        "published_at": "12.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-14",
+        "file": "20261014_dv_trade_region_spub.xls",
+        "sha256": "0e9ca1fb1ef1e6b3343cd1a4e0bc22d4f22e6b5a358397152c4934a4fab246b1",
+        "url": "https://www.atsenergo.ru/nreport?fid=5DB5AD33E97C5244E0633200640AE71B&region=sib",
+        "published_at": "13.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-15",
+        "file": "20261015_dv_trade_region_spub.xls",
+        "sha256": "95f3af11a8c345415ef8deca2b7106f4aa2905bfe620d036c6039796ae0c9d56",
+        "url": "https://www.atsenergo.ru/nreport?fid=5DC9CB098D974A07E0633200640AE1DD&region=sib",
+        "published_at": "14.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-16",
+        "file": "20261016_dv_trade_region_spub.xls",
+        "sha256": "95a55be6070b1bb4a61430078e266c067da44c54d23f776a50b7884e25e5ede9",
+        "url": "https://www.atsenergo.ru/nreport?fid=5DDDE8E1BEFE42E1E0633200640A8B5B&region=sib",
+        "published_at": "15.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-19",
+        "file": "20261019_dv_trade_region_spub.xls",
+        "sha256": "b4654a761f5fe17a2e747b14d7db9c82c5a2abe4b27c43767634255def17c4ac",
+        "url": "https://www.atsenergo.ru/nreport?fid=5E1A3B56371F2762E0633200640A02CE&region=sib",
+        "published_at": "18.10.2026 11:33",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-20",
+        "file": "20261020_dv_trade_region_spub.xls",
+        "sha256": "f27358390be8cffea3b968c0269535b5825430e1292074c84cc5ec0e3ae73cc5",
+        "url": "https://www.atsenergo.ru/nreport?fid=5E2E6AFADE321B6EE0633200640A75C6&region=sib",
+        "published_at": "19.10.2026 11:38",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-21",
+        "file": "20261021_dv_trade_region_spub.xls",
+        "sha256": "78c618791cf7de8800b344672b46a506786272d976e98f2147319879a2e1659a",
+        "url": "https://www.atsenergo.ru/nreport?fid=5E4288D0C4DE14F8E0633200640A0AEA&region=sib",
+        "published_at": "20.10.2026 11:38",
+        "retrieved_at_utc": "2026-11-05T15:46:43+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-22",
+        "file": "20261022_dv_trade_region_spub.xls",
+        "sha256": "5b0ed9a8a808f33d23a0477476ace5dd7d139e33bbe21502c2a18bca503a7389",
+        "url": "https://www.atsenergo.ru/nreport?fid=5E569F8165690B9BE0633200640A175D&region=sib",
+        "published_at": "21.10.2026 11:36",
+        "retrieved_at_utc": "2026-11-05T15:46:44+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-23",
+        "file": "20261023_dv_trade_region_spub.xls",
+        "sha256": "2721e38bf7b625ca779af7f0f9a5ebe536a27caede09aee1875b9c685f85fb81",
+        "url": "https://www.atsenergo.ru/nreport?fid=5E6ABDB74C1B03E1E0633200640AA1CA&region=sib",
+        "published_at": "22.10.2026 11:36",
+        "retrieved_at_utc": "2026-11-05T15:46:44+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-26",
+        "file": "20261026_dv_trade_region_spub.xls",
+        "sha256": "3219e2a65ba6639de618462c2d898c5c86cfb42b135e52f6d03d420a1c7e76a6",
+        "url": "https://www.atsenergo.ru/nreport?fid=5EA721BBDF216EC8E0633200640AD4DF&region=sib",
+        "published_at": "25.10.2026 11:39",
+        "retrieved_at_utc": "2026-11-05T15:46:46+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-27",
+        "file": "20261027_dv_trade_region_spub.xls",
+        "sha256": "ae855248a0ffbab3ea00cd9a5bd8de0e492fb9cb1e8dfe076ec6b26724bb1a8a",
+        "url": "https://www.atsenergo.ru/nreport?fid=5EBB35141E0663DAE0633200640AEB6F&region=sib",
+        "published_at": "26.10.2026 11:36",
+        "retrieved_at_utc": "2026-11-05T15:46:46+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-28",
+        "file": "20261028_dv_trade_region_spub.xls",
+        "sha256": "d4a219854886e4fc6cb55819a31ee3eca47c44012377c442039bee97babdc5b4",
+        "url": "https://www.atsenergo.ru/nreport?fid=5ECF4EFCB4E45D0EE0633200640AF259&region=sib",
+        "published_at": "27.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:58+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-29",
+        "file": "20261029_dv_trade_region_spub.xls",
+        "sha256": "f9d741a173967c8d71fade6fe7e2557320742097c95d0581dd14018f8974f4d1",
+        "url": "https://www.atsenergo.ru/nreport?fid=5EE36CD5695258A9E0633200640A93AB&region=sib",
+        "published_at": "28.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:46+00:00",
+        "usable_by_archive_date": true
+      },
+      {
+        "day": "2026-10-30",
+        "file": "20261030_dv_trade_region_spub.xls",
+        "sha256": "fc9f2ef5a52f2a71bc7c441adcf22e439bb31b44009fe90f9f1acc729f7a254f",
+        "url": "https://www.atsenergo.ru/nreport?fid=5EF78AAB673B50CEE0633200640A8B0C&region=sib",
+        "published_at": "29.10.2026 11:35",
+        "retrieved_at_utc": "2026-11-05T15:46:46+00:00",
+        "usable_by_archive_date": true
+      }
+    ],
+    "native_temperature_values": 248
+  },
+  "evaluation": [
+    {
+      "recipe": "queryrmse_interval",
+      "days": 247,
+      "hit2": 103,
+      "hit2p2": 180,
+      "hit2_pct": 41.70040485829959,
+      "hit2p2_pct": 72.8744939271255,
+      "split": "2025"
+    },
+    {
+      "recipe": "queryrmse_interval",
+      "days": 183,
+      "hit2": 105,
+      "hit2p2": 137,
+      "hit2_pct": 57.377049180327866,
+      "hit2p2_pct": 74.86338797814207,
+      "split": "2026_ytd"
+    }
+  ],
+  "source_sha256": {
+    "amur_dataset_2025-01_2026-09.csv": "ed62eb66a33bf3bcc8b8d487f198daedeeebe58e8de836e88dc28d0a1489cd24",
+    "ats_release_headers_2026-11-05.json": "217dc14816bba9b8bd34219185b6aea5ded63b0e05021bd56cca568b6bc82ff6",
+    "ats_rsv_hourly.csv": "99f3cbff9f3918b7a3b0493755212fdd2b6d09d806ac1a667bba23643e27e267",
+    "daily_reconciliation.csv": "e3354dc0524d6bec80b31ae817a3603e35467e6b782d79d0002976373fc63ac6",
+    "dataset_archive_v1.csv": "4fb8f63a1d79d25f936708e76511b34e6cbb87daff3e75cdfd6d13ce41051760",
+    "export_amur_streamlit.py": "60421b5d0b9bd77c6ce79c821bdb2110ebba618b7a314a7bb23dcd6595ac47fb"
+  }
+}

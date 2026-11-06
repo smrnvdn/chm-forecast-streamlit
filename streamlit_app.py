@@ -20,7 +20,7 @@ st.set_page_config(
 def load_forecast_snapshot(region_code: str, file_mtime_ns: int) -> pd.DataFrame:
     """Load one checked regional snapshot; mtime invalidates the file cache."""
     del file_mtime_ns
-    hourly = pd.read_csv(snapshot_path(region_code), parse_dates=["date"])
+    hourly = pd.read_csv(snapshot_path(region_code), parse_dates=["date"], float_precision="round_trip")
     hourly = validate_snapshot(hourly, region_code)
     hourly["month_start"] = hourly["date"].dt.to_period("M").dt.to_timestamp()
     return hourly
@@ -109,6 +109,11 @@ if verified.empty:
     st.info("Прогноз на месяц с неизвестными фактическими часами максимума. Точность будет рассчитана после публикации фактических ЧМ.", icon=":material/schedule:")
 elif len(verified) != len(daily):
     st.caption(f"Фактический час максимума опубликован для {len(verified)} из {len(daily)} выбранных дней; точность рассчитана только по этим дням.")
+
+if region_code == "amur":
+    cold_days = int(daily.forecast_basis.eq("common_cold_start").sum())
+    if cold_days:
+        st.caption(f"На {cold_days} датах января–февраля 2025 использован исходный порядок часов. Обучение модели начинается с марта.")
 
 st.subheader("Итоговый прогноз")
 if region.score_kind == "ranking_score":
