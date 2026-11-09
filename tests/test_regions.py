@@ -13,6 +13,14 @@ from src.presentation import forecast_matrix
 
 
 class RegionSnapshotTests(unittest.TestCase):
+    def test_displayed_probabilities_sum_to_100_each_day(self) -> None:
+        for code in REGIONS:
+            with self.subTest(region=code):
+                hourly = validate_snapshot(pd.read_csv(snapshot_path(code), parse_dates=['date']), code)
+                matrix = forecast_matrix(hourly, 'probability')
+                values = matrix.apply(lambda column: column.astype(str).str.extract(r'(\d+)%')[0].astype(float))
+                self.assertTrue(values.sum(axis=1).eq(100).all())
+
     def test_all_snapshots_have_one_target_and_valid_attempts(self) -> None:
         expected_q4_2025 = {
             "sverdlovsk": (35, 42),
@@ -70,11 +78,11 @@ class RegionSnapshotTests(unittest.TestCase):
                 self.assertEqual(set(september.market_hour), september_hours)
                 self.assertTrue(september.groupby("date").is_predicted.sum().eq(4).all())
                 self.assertEqual(len(forecast_matrix(september, "probability").attrs["actual_cells"]), 22)
-                self.assertEqual(len(matrix.attrs["actual_cells"]), 247)
+                self.assertEqual(len(matrix.attrs["actual_cells"]), 269)
                 october = hourly.loc[hourly.month.eq("2026-10")]
                 self.assertEqual(october.date.nunique(), 22)
-                self.assertFalse(october.fact_available.any())
-                self.assertTrue(october[["hit_at_2", "hit_segment_2plus2"]].isna().all().all())
+                self.assertTrue(october.fact_available.all())
+                self.assertTrue(october[["hit_at_2", "hit_segment_2plus2"]].notna().all().all())
                 self.assertTrue(october.load_history_last_month.eq("2026-08").all())
                 october_hours = (set(range(5, 9)) | set(range(12, 18))) if code == "kemerovo" else set(range(8, 22))
                 self.assertTrue(october.groupby("date").market_hour.agg(set).map(lambda hours: hours == october_hours).all())
@@ -84,7 +92,7 @@ class RegionSnapshotTests(unittest.TestCase):
         hourly = validate_snapshot(pd.read_csv(snapshot_path("volgograd"), parse_dates=["date"]), "volgograd")
         daily = daily_summary(hourly)
         daily = daily.loc[daily.date.dt.year.eq(2026)]
-        self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (89, 104))
+        self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (95, 110))
         self.assertEqual(int(hourly.market_hour.min()), 8)
         self.assertEqual(int(hourly.market_hour.max()), 21)
         self.assertIn("probability", hourly.columns)
@@ -106,7 +114,7 @@ class RegionSnapshotTests(unittest.TestCase):
         hourly = validate_snapshot(pd.read_csv(snapshot_path("perm"), parse_dates=["date"]), "perm")
         daily = daily_summary(hourly)
         daily = daily.loc[daily.date.dt.year.eq(2026)]
-        self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (105, 125))
+        self.assertEqual((int(daily.hit_at_2.sum()), int(daily.hit_segment_2plus2.sum())), (115, 135))
         self.assertEqual(sorted(hourly.loc[hourly.date.dt.year.eq(2026), "month"].unique()), [f"2026-{m:02}" for m in range(1, 11)])
         self.assertTrue((hourly.load_history_last_month == (hourly.date.dt.to_period("M") - 2).astype(str)).all())
         for (_, _), part in hourly.groupby(["date", "segment"]):
@@ -184,9 +192,9 @@ class DashboardTests(unittest.TestCase):
                 self.assertIn(REGIONS[code].genitive, app.title[0].value)
                 self.assertEqual(app.query_params["region"], [code])
                 self.assertEqual(app.query_params["other"], ["preserved"])
-                self.assertEqual([m.value for m in app.metric], ["22", "—", "—", "—"])
+                self.assertEqual(app.metric[0].value, "22")
+                self.assertNotEqual(app.metric[1].value, "—")
                 self.assertEqual(app.multiselect(key=f"forecast_months_{code}").value, [pd.Timestamp("2026-10-01")])
-                self.assertTrue(any("неизвестными фактическими" in notice.value for notice in app.info))
                 app.multiselect(key=f"forecast_months_{code}").set_value([pd.Timestamp("2026-09-01")]).run()
                 self.assertEqual([m.value for m in app.metric], september_metrics[code])
                 q4_2025_labels = {month_label(pd.Timestamp(f"2025-{month:02}-01")) for month in (10, 11, 12)}
@@ -205,7 +213,7 @@ class DashboardTests(unittest.TestCase):
         app.run()
         self.assertFalse(app.exception)
         self.assertEqual(app.selectbox(key="forecast_region").value, "perm")
-        self.assertEqual([m.value for m in app.metric[:3]], ["22", "—", "—"])
+        self.assertEqual([m.value for m in app.metric[:3]], ["22", "10/22 (45.5%)", "10/22 (45.5%)"])
 
     def test_switching_regions_preserves_each_snapshot(self) -> None:
         app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "streamlit_app.py"), default_timeout=20).run()
@@ -245,8 +253,8 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual([m.value for m in app.metric[:3]], ["183", "104/183 (56.8%)", "117/183 (63.9%)"])
         self.assertFalse(any("161 из 183" in caption.value for caption in app.caption))
         app.multiselect(key="forecast_months_sverdlovsk").set_value([pd.Timestamp(f"2026-{m:02}-01") for m in range(1, 11)]).run()
-        self.assertEqual([m.value for m in app.metric[:3]], ["205", "104/183 (56.8%)", "117/183 (63.9%)"])
-        self.assertTrue(any("183 из 205" in caption.value for caption in app.caption))
+        self.assertEqual([m.value for m in app.metric[:3]], ["205", "119/205 (58.0%)", "132/205 (64.4%)"])
+        self.assertFalse(any("183 из 205" in caption.value for caption in app.caption))
 
     def test_amur_opens_october_and_can_compare_september(self) -> None:
         app = self.make_app()
@@ -257,11 +265,10 @@ class DashboardTests(unittest.TestCase):
         months = app.multiselect(key="forecast_months_amur")
         self.assertEqual(months.value, [pd.Timestamp("2026-10-01")])
         self.assertEqual(len(months.options), 22)
-        self.assertEqual([m.value for m in app.metric], ["22", "—", "—", "—"])
-        self.assertTrue(any("неизвестными фактическими часами" in notice.value for notice in app.info))
+        self.assertEqual([m.value for m in app.metric], ["22", "12/22 (54.5%)", "16/22 (72.7%)", "16/22 (72.7%)"])
         october_matrix = app.dataframe[0].value
         self.assertEqual(len(october_matrix), 22)
-        self.assertFalse(october_matrix.apply(lambda column: column.str.contains("✓")).any().any())
+        self.assertEqual(int(october_matrix.apply(lambda column: column.str.contains("✓")).sum().sum()), 16)
         self.assertTrue(october_matrix.apply(lambda column: column.str.extract(r"(\d+)%")[0].astype(float)).sum(axis=1).eq(100).all())
 
         months.set_value([pd.Timestamp("2026-09-01")]).run()
@@ -274,7 +281,7 @@ class DashboardTests(unittest.TestCase):
         ).run()
         self.assertFalse(app.exception)
         self.assertTrue(any("исходный порядок часов" in caption.value for caption in app.caption))
-        self.assertTrue(any("32 из 54" in caption.value for caption in app.caption))
+        self.assertFalse(any("32 из 54" in caption.value for caption in app.caption))
         self.assertTrue(any("2025" in label for label in app.dataframe[0].value.index))
 
     def test_amur_snapshot_matches_approved_days_and_cutoffs(self) -> None:
@@ -282,8 +289,8 @@ class DashboardTests(unittest.TestCase):
         daily = daily_summary(hourly)
         self.assertEqual(len(daily), 452)
         self.assertEqual(len(hourly), 3737)
-        self.assertEqual(int(daily.fact_available.sum()), 430)
-        expected = {2025: (247, 103, 180), 2026: (183, 105, 137)}
+        self.assertEqual(int(daily.fact_available.sum()), 452)
+        expected = {2025: (247, 103, 180), 2026: (205, 117, 153)}
         for year, metrics in expected.items():
             days = daily.loc[daily.date.dt.year.eq(year) & daily.fact_available]
             self.assertEqual((len(days), int(days.hit_at_2.sum()), int(days.hit_segment_2plus2.sum())), metrics)

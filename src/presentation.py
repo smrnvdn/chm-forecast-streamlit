@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pandas as pd
+import numpy as np
 
 
 def forecast_matrix(hourly: pd.DataFrame, score_kind: str) -> pd.DataFrame:
@@ -12,7 +13,16 @@ def forecast_matrix(hourly: pd.DataFrame, score_kind: str) -> pd.DataFrame:
         if "display_percent" in display:
             display["cell"] = display.display_percent.map(lambda value: f"{value:.0f}%")
         else:
-            display["cell"] = display.probability.map(lambda value: f"{value:.0%}")
+            # Allocate remaining percentage points by largest fractional part.
+            raw = display.probability * 100
+            rounded = np.floor(raw).astype(int)
+            for _, group in display.groupby("date", sort=False):
+                remainder = 100 - int(rounded.loc[group.index].sum())
+                order = pd.DataFrame({"fraction": raw.loc[group.index] - rounded.loc[group.index],
+                                      "hour": group.market_hour}).sort_values(
+                                          ["fraction", "hour"], ascending=[False, True], kind="stable")
+                rounded.loc[order.index[:remainder]] += 1
+            display["cell"] = rounded.map(lambda value: f"{value}%")
     elif score_kind == "load_shape_score":
         # The Volgograd model predicts a relative hourly load shape, not an
         # event probability. Keep its signed percentage-point scale visible.

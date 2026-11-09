@@ -82,5 +82,31 @@
   "archived_prefix_preserved_byte_exact": true,
   "archive_rows": 2553,
   "source_reports": "RP5",
-  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages.",
+  "october_actual_source": {
+    "name": "Кемеровская область",
+    "days": 22,
+    "hit2": 17,
+    "hit22": 18,
+    "identity": [
+      "ПАО \"Кузбассэнергосбыт\"",
+      "Кемеровская область",
+      "01.10.2026 - 31.10.2026",
+      "PKUZBENE"
+    ],
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202610_KUZBSBYT_32_calcfacthour.xlsx",
+    "sha256": "1f7f0536ca5caf39f63086784b6fc407a82643ca7d62a45ca7d5ba8b4c57bf70"
+  },
+  "october_actual_days": 22,
+  "october_hit_at_2": {
+    "hits": 17,
+    "denominator": 22,
+    "percent": 77.27
+  },
+  "october_hit_segment_2plus2": {
+    "hits": 18,
+    "denominator": 22,
+    "percent": 81.82
+  },
+  "october_labeled_snapshot_sha256": "400ff6f5694d6c70b06327fd089ad710fe672111fc63f3d7cc2cbfc1dc8e8d0d"
 }

@@ -68,5 +68,31 @@
   "archived_prefix_preserved_byte_exact": true,
   "archive_rows": 3008,
   "source_reports": "RP5",
-  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages.",
+  "october_actual_source": {
+    "name": "Пермский край",
+    "days": 22,
+    "hit2": 10,
+    "hit22": 10,
+    "identity": [
+      "ПАО \"Пермэнергосбыт\"",
+      "Пермский край",
+      "01.10.2026 - 31.10.2026",
+      "PPERMENE"
+    ],
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202610_PERMENER_57_calcfacthour.xlsx",
+    "sha256": "dbb44bf0c3313c955ebdb9849b22fdafc57694f2f0c3bd5b8cb1760ecc0e5870"
+  },
+  "october_actual_days": 22,
+  "october_hit_at_2": {
+    "hits": 10,
+    "denominator": 22,
+    "percent": 45.45
+  },
+  "october_hit_segment_2plus2": {
+    "hits": 10,
+    "denominator": 22,
+    "percent": 45.45
+  },
+  "october_labeled_snapshot_sha256": "c64f0190f49f2bcd65952cf86defd6be8a41d8ebf3ac547ecaf5f938671f206f"
 }

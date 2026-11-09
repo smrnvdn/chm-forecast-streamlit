@@ -131,5 +131,31 @@
   "archived_prefix_preserved_byte_exact": true,
   "archive_rows": 3008,
   "source_reports": "RP5 and ATS trade_region_spub",
-  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages.",
+  "october_actual_source": {
+    "name": "Свердловская область",
+    "days": 22,
+    "hit2": 15,
+    "hit22": 15,
+    "identity": [
+      "АО \"ЕЭНС\" (г.Екатеринбург)",
+      "Свердловская область",
+      "01.10.2026 - 31.10.2026",
+      "PEKELSK1"
+    ],
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202610_EKATSBKO_65_calcfacthour.xlsx",
+    "sha256": "3fb61aad942f4735c60b0fb154871c66bbaa0e62149d6ae662dd05e332e14255"
+  },
+  "october_actual_days": 22,
+  "october_hit_at_2": {
+    "hits": 15,
+    "denominator": 22,
+    "percent": 68.18
+  },
+  "october_hit_segment_2plus2": {
+    "hits": 15,
+    "denominator": 22,
+    "percent": 68.18
+  },
+  "october_labeled_snapshot_sha256": "946b071d170299616ac7194ad6f6bc6498663684968e21465bd25f32875d59aa"
 }

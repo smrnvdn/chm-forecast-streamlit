@@ -501,5 +501,31 @@
     "daily_reconciliation.csv": "e3354dc0524d6bec80b31ae817a3603e35467e6b782d79d0002976373fc63ac6",
     "dataset_archive_v1.csv": "4fb8f63a1d79d25f936708e76511b34e6cbb87daff3e75cdfd6d13ce41051760",
     "export_amur_streamlit.py": "d1eda0fe5f0ef58135bbae7958cc1483e08c2ac9e85958247262b04de1b5fa96"
-  }
+  },
+  "october_actual_source": {
+    "name": "Амурская область",
+    "days": 22,
+    "hit2": 12,
+    "hit22": 16,
+    "identity": [
+      "ПАО \"ДЭК\"",
+      "Амурская область",
+      "01.10.2026 - 31.10.2026",
+      "PAMURENE"
+    ],
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202610_DEKENERG_10_calcfacthour.xlsx",
+    "sha256": "de144d1331d8c4dbeee364ad245969e2add53ef0a7b57939ee54793f34809888"
+  },
+  "october_actual_days": 22,
+  "october_hit_at_2": {
+    "hits": 12,
+    "denominator": 22,
+    "percent": 54.55
+  },
+  "october_hit_segment_2plus2": {
+    "hits": 16,
+    "denominator": 22,
+    "percent": 72.73
+  },
+  "october_labeled_snapshot_sha256": "9d95f9cc8872727c679fecb80e2652db99db2620d047d5a3e388b5fd010be318"
 }

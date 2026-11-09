@@ -96,5 +96,31 @@
   "archived_prefix_preserved_byte_exact": true,
   "archive_rows": 3008,
   "source_reports": "RP5 and ATS trade_region_spub",
-  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages.",
+  "october_actual_source": {
+    "name": "Волгоградская область",
+    "days": 22,
+    "hit2": 6,
+    "hit22": 6,
+    "identity": [
+      "ПАО \"Волгоградэнергосбыт\"",
+      "Волгоградская область",
+      "01.10.2026 - 31.10.2026",
+      "PVOLGOGE"
+    ],
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202610_VOLGOGEN_18_calcfacthour.xlsx",
+    "sha256": "52e7e7c9b28c708bcd8430ea0f42bb8fd536c1e03864440e8d4afc0f0fb555ae"
+  },
+  "october_actual_days": 22,
+  "october_hit_at_2": {
+    "hits": 6,
+    "denominator": 22,
+    "percent": 27.27
+  },
+  "october_hit_segment_2plus2": {
+    "hits": 6,
+    "denominator": 22,
+    "percent": 27.27
+  },
+  "october_labeled_snapshot_sha256": "230a5b6fb708ac08eedeefc06a03e6dccb0b8979fec89c8a5a641e027166efbd"
 }

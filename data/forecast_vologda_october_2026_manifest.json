@@ -493,5 +493,31 @@
   "archived_prefix_preserved_byte_exact": true,
   "archive_rows": 3008,
   "source_reports": "RP5 and ATS trade_region_spub",
-  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages."
+  "limitations": "No October labels or historical proof of actual pre-day issue; observed weather and archive price vintages.",
+  "october_actual_source": {
+    "name": "Вологодская область",
+    "days": 22,
+    "hit2": 11,
+    "hit22": 11,
+    "identity": [
+      "ООО \"ССК\"",
+      "Вологодская область",
+      "01.10.2026 - 31.10.2026",
+      "PVOLOGEN"
+    ],
+    "source_url": "https://www.atsenergo.ru/dload/calcfacthour_regions/202610_NORDSBYT_19_calcfacthour.xlsx",
+    "sha256": "de02bb4ef9b634051d32a294afd045dbc7cb17af8890406c0f7a67a89230cac4"
+  },
+  "october_actual_days": 22,
+  "october_hit_at_2": {
+    "hits": 11,
+    "denominator": 22,
+    "percent": 50.0
+  },
+  "october_hit_segment_2plus2": {
+    "hits": 11,
+    "denominator": 22,
+    "percent": 50.0
+  },
+  "october_labeled_snapshot_sha256": "db660749beb954aada0012bac8cfbe7f6d20740fd3996c6b0dc2f4a437803b4f"
 }
